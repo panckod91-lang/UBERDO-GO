@@ -782,6 +782,146 @@ body.fullMeter .controls{
   }
 }
 
+/* ===== v2.3 UI POLISH ===== */
+
+/* --- State badge animations --- */
+@keyframes stateIconPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50%       { transform: scale(1.35); opacity: .75; }
+}
+@keyframes stateIconBlink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: .3; }
+}
+
+.stateIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  font-size: .82em;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.stateIconPulse {
+  animation: stateIconPulse 1.2s ease-in-out infinite;
+}
+.stateIconBlink {
+  animation: stateIconBlink 1.8s ease-in-out infinite;
+}
+
+/* State-specific overrides (icon bg + text glow) */
+.stateFree {
+  color: #8899b0 !important;
+  background: rgba(255,255,255,.045) !important;
+  border-color: rgba(255,255,255,.07) !important;
+}
+.stateFree .stateIcon {
+  background: rgba(169,184,204,.12);
+  color: #8899b0;
+}
+
+.stateRunning {
+  color: #28e39c !important;
+  background: rgba(40,227,156,.11) !important;
+  border-color: rgba(40,227,156,.26) !important;
+  text-shadow: 0 0 20px rgba(40,227,156,.3) !important;
+}
+.stateRunning .stateIcon {
+  background: rgba(40,227,156,.24);
+  color: #28e39c;
+}
+
+.statePaused {
+  color: #ffd166 !important;
+  background: rgba(255,209,102,.11) !important;
+  border-color: rgba(255,209,102,.28) !important;
+}
+.statePaused .stateIcon {
+  background: rgba(255,209,102,.22);
+  color: #ffd166;
+}
+
+/* --- Portrait normal: fareBox more breathing room --- */
+@media (orientation:portrait) {
+  .fareBox {
+    min-height: 230px !important;
+    padding: 22px 20px !important;
+    gap: 10px !important;
+    justify-content: center !important;
+  }
+  .fareBox .label {
+    font-size: 13px !important;
+    letter-spacing: .16em !important;
+    margin-bottom: 2px !important;
+  }
+  .fare {
+    font-size: clamp(68px, 20vw, 118px) !important;
+    line-height: .84 !important;
+    letter-spacing: -.055em !important;
+    transform: translateX(-3px) !important;
+  }
+  .state {
+    margin-top: 4px !important;
+    font-size: 14px !important;
+    padding: 7px 14px !important;
+  }
+}
+
+/* --- fullMeter portrait: bigger fare, cleaner layout --- */
+@media (orientation:portrait) {
+  body.fullMeter .fareBox {
+    min-height: 270px !important;
+    padding: 24px 22px !important;
+    gap: 10px !important;
+    justify-content: center !important;
+  }
+  body.fullMeter .fare {
+    font-size: clamp(90px, 26vw, 162px) !important;
+    line-height: .82 !important;
+    letter-spacing: -.07em !important;
+  }
+  body.fullMeter .state {
+    font-size: clamp(17px, 5vw, 28px) !important;
+    margin-top: 8px !important;
+    padding: 7px 14px !important;
+  }
+  body.fullMeter .fareBox .label {
+    font-size: clamp(13px, 3.5vw, 18px) !important;
+    letter-spacing: .18em !important;
+  }
+}
+
+/* --- fullMeter landscape: maximize fareBox and fare --- */
+body.fullMeter .fareBox {
+  gap: 8px !important;
+  padding: 20px 28px 16px 32px !important;
+}
+body.fullMeter .fare {
+  font-size: clamp(86px, 12.5vw, 164px) !important;
+  line-height: .80 !important;
+  letter-spacing: -.075em !important;
+  transform: translateX(-8px) !important;
+}
+body.fullMeter .fareBox .label {
+  font-size: clamp(12px, 1.5vw, 20px) !important;
+  letter-spacing: .18em !important;
+}
+body.fullMeter .state {
+  font-size: clamp(16px, 2.2vw, 30px) !important;
+  margin-top: 6px !important;
+  padding: 7px 14px !important;
+}
+
+/* Ensure state badge never wraps */
+.state {
+  white-space: nowrap;
+  max-width: max-content;
+}
+
 </style>
 </head>
 <body>
@@ -807,7 +947,7 @@ body.fullMeter .controls{
           <div class="fareBox">
             <div class="label">Total del viaje</div>
             <div class="fare" id="total">$0</div>
-            <div class="state" id="rideState">● Libre</div>
+            <div class="state stateFree" id="rideState"><span class="stateIcon">○</span> Libre</div>
           </div>
 
           <div class="controls">
@@ -984,14 +1124,18 @@ function updateUI(){
   $("speed").textContent = Math.round(currentSpeed || 0);
   $("accuracy").textContent = currentAccuracy ? Math.round(currentAccuracy) + "m" : "—";
 
+  const stEl = $("rideState");
   if(!isRunning){
-    $("rideState").textContent = "● Libre";
+    stEl.className = "state stateFree";
+    stEl.innerHTML = `<span class="stateIcon">○</span> Libre`;
     $("subtitle").textContent = "Sistema listo para viajar";
   } else if(isPaused){
-    $("rideState").textContent = "● Pausado";
+    stEl.className = "state statePaused";
+    stEl.innerHTML = `<span class="stateIcon stateIconBlink">⏸</span> Pausado`;
     $("subtitle").textContent = "Viaje pausado";
   } else {
-    $("rideState").textContent = "● En viaje";
+    stEl.className = "state stateRunning";
+    stEl.innerHTML = `<span class="stateIcon stateIconPulse">●</span> En viaje`;
     $("subtitle").textContent = "Midiendo con GPS";
   }
 }
