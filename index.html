@@ -446,7 +446,7 @@
       .trip{padding:8px}
     }
   
-/* v2.0 full meter layout fix */
+/* v2.1b full meter layout fix */
 body.fullMeter .app{
   width:100vw;
   height:100svh;
@@ -573,6 +573,87 @@ body.fullMeter .stat:nth-child(4){
   }
 }
 
+
+/* v2.1b tablero polish REAL */
+.versionTag{font-size:12px;color:var(--muted);font-weight:900;margin-left:4px;vertical-align:middle}
+
+.stateFree{color:#a9b8cc !important}
+.stateRunning{color:#28e39c !important;text-shadow:0 0 18px rgba(40,227,156,.28)}
+.statePaused{color:#ffd166 !important;text-shadow:0 0 18px rgba(255,209,102,.22)}
+
+.fareBox{
+  gap:6px;
+}
+.fare{
+  letter-spacing:-.055em;
+  transform:translateX(-4px);
+}
+.state{
+  font-weight:900;
+}
+
+body.fullMeter .meter{
+  grid-template-rows:minmax(0,1fr) auto;
+  gap:8px;
+  padding:12px 14px 10px;
+}
+body.fullMeter .topMeterArea{
+  gap:14px;
+}
+body.fullMeter .fareBox{
+  justify-content:center;
+  padding:18px 26px 14px 28px;
+  gap:4px;
+}
+body.fullMeter .fareBox .label{
+  font-size:clamp(12px,1.55vw,20px);
+  margin-bottom:0;
+}
+body.fullMeter .fare{
+  font-size:clamp(78px,12.2vw,158px);
+  line-height:.82;
+  max-width:100%;
+  letter-spacing:-.07em;
+  transform:translateX(-6px);
+}
+body.fullMeter .state{
+  font-size:clamp(18px,2.25vw,30px);
+  margin-top:4px;
+}
+body.fullMeter .gridStats{
+  gap:10px;
+}
+body.fullMeter .stat{
+  padding:12px 18px;
+}
+body.fullMeter .stat b{
+  font-size:clamp(34px,5.5vw,74px);
+}
+body.fullMeter .controls{
+  gap:10px;
+}
+
+@media (orientation:portrait){
+  .fareBox{
+    min-height:250px;
+    justify-content:center;
+  }
+  .fare{
+    font-size:clamp(62px,20vw,118px);
+    line-height:.86;
+  }
+  body.fullMeter .fareBox{
+    min-height:250px;
+    padding:18px 20px;
+  }
+  body.fullMeter .fare{
+    font-size:clamp(76px,22vw,142px);
+  }
+  body.fullMeter .controls{
+    grid-template-rows:repeat(2,72px);
+  }
+}
+
 </style>
 </head>
 <body>
@@ -582,8 +663,8 @@ body.fullMeter .stat:nth-child(4){
         <div class="brand">
           <div class="logo">Ü</div>
           <div>
-            <h1>ÜBERDO GO <span class="versionTag">v2.0</span></h1>
-            <div class="sub" id="subtitle">Sistema listo para viajar · rotación libre v2.0</div>
+            <h1>ÜBERDO GO <span class="versionTag">v2.1b</span></h1>
+            <div class="sub" id="subtitle">Sistema listo para viajar · rotación libre v2.1b</div>
           </div>
         </div>
         
@@ -596,7 +677,7 @@ body.fullMeter .stat:nth-child(4){
       <div class="meter">
         <div class="topMeterArea">
           <div class="fareBox">
-            <div class="label">Total estimado</div>
+            <div class="label">Total del viaje</div>
             <div class="fare" id="total">$0</div>
             <div class="state" id="rideState">● Libre</div>
           </div>
@@ -659,7 +740,7 @@ body.fullMeter .stat:nth-child(4){
   <div class="fullHint">Doble tap para volver</div>
 
 <script>
-const VERSION = "2.0.0";
+const VERSION = "2.1b";
 const CACHE_LABEL = "remisimetro-gps";
 
 let watchId = null;
@@ -1043,7 +1124,7 @@ if("serviceWorker" in navigator){
 // Mini diagnóstico visible en consola para instalación PWA.
 window.addEventListener("appinstalled", () => console.log("ÜBERDO GO instalado como PWA"));
 window.addEventListener("beforeinstallprompt", () => console.log("ÜBERDO GO listo para instalar"));
-console.log("ÜBERDO GO v2.0.0 cargado desde:", location.href);
+console.log("ÜBERDO GO v2.1b cargado desde:", location.href);
 
 </script>
 </body>

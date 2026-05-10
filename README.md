@@ -1,13 +1,13 @@
-# ÜBERDO GO v2.1
+# ÜBERDO GO v2.1b REAL
 
-Cambios:
-- “Total estimado” ahora es “Total del viaje”.
-- Ajuste visual de tarifa en modo normal y doble tap.
-- Menos margen/hueco en modo apaisado fullscreen.
-- Estados diferenciados:
+Esta versión corrige el armado fallido de la 2.1.
+
+Cambios reales en index.html:
+- Versión visible: v2.1b.
+- “Total estimado” → “Total del viaje”.
+- Estados con icono/color:
   - ○ Libre
   - ▶ En viaje
   - ⏸ Pausado
-- Colores por estado.
-- Versión visible: v2.1.
-- Cache: uberdo-go-v21-meter-polish.
+- Ajustes visuales del tablero full.
+- Cache: uberdo-go-v21b-real.
