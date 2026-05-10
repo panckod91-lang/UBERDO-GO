@@ -1,31 +1,14 @@
-# ÜBERDO GO
+# ÜBERDO GO v1.2b SAFE
 
-PWA apaisada para medir viajes con GPS.
+Base: v1.1 que abría correctamente.
+Cambio mínimo:
+- Ya no bloquea vertical.
+- Funciona portrait y landscape.
+- Manifest con orientation any.
+- Cache nueva: uberdo-go-v12b-safe.
 
-## Subida a GitHub Pages
-
-Subir estos archivos a la raíz del repo:
-
-- index.html
-- manifest.json
-- service-worker.js
-- icon-192.png
-- icon-512.png
-
-Luego:
-1. Settings → Pages.
-2. Deploy from branch.
-3. Branch: main / root.
-4. Abrir la URL publicada en Chrome Android.
-5. Menú ⋮ → Agregar a pantalla principal / Instalar.
-
-## Si instala pero no abre
-
-1. Borrar el ícono instalado anterior.
-2. En Chrome: Configuración → Configuración de sitios → Todos los sitios.
-3. Buscar el dominio de GitHub Pages.
-4. Borrar datos.
-5. Volver a abrir la URL.
-6. Instalar otra vez.
-
-Esta versión usa cache: uberdo-go-v2.
+Si la app instalada no abre:
+1. Borrar la app instalada anterior.
+2. Chrome → configuración del sitio → tu GitHub Pages → borrar datos.
+3. Abrir la URL desde Chrome.
+4. Instalar otra vez.
