@@ -1,10 +1,12 @@
-# ÜBERDO GO v2.4
+# ÜBERDO GO v2.5
 
-Modo doble tap rediseñado de cero:
-- Dashboard fullscreen separado.
-- Landscape: tarifa gigante izquierda, botones derecha, stats abajo.
-- Portrait: tarifa arriba, botones debajo, stats abajo.
-- No depende del layout normal.
+Prioridad: estabilidad en uso real.
 
-Cache:
-- uberdo-go-v24-true-full-dashboard
+Cambios:
+- El doble tap ya no depende de la API fullscreen del navegador.
+- El dashboard full es visual, más estable al tacto.
+- Botón “Salir” visible para volver del modo full.
+- Botones full con z-index y stopPropagation.
+- Finalizar desde full usa handler seguro.
+- Manifest vuelve a display: standalone.
+- Cache: uberdo-go-v25-stable-full-controls.

@@ -2,9 +2,9 @@
   "name": "ÜBERDO GO",
   "short_name": "ÜBERDO",
   "description": "Medidor GPS de viajes con tarifa por distancia y tiempo.",
-  "start_url": "./index.html?v=2.4",
+  "start_url": "./index.html?v=2.5",
   "scope": "./",
-  "display": "fullscreen",
+  "display": "standalone",
   "background_color": "#05080f",
   "theme_color": "#05080f",
   "icons": [
