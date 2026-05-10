@@ -20,9 +20,9 @@
   <meta property="og:image:width"  content="512" />
   <meta property="og:image:height" content="512" />
   <meta property="og:type"        content="website" />
-  <meta property="og:url"         content="https://uberdo-go.pages.dev" />
+  <meta property="og:url"         content="https://panckod91-lang.github.io/UBERDO-GO/" />
   <meta name="twitter:card"       content="summary" />
-  <meta name="twitter:image"      content="https://uberdo-go.pages.dev/icon-512.png" />
+  <meta name="twitter:image"      content="https://panckod91-lang.github.io/UBERDO-GO/icon-512.png" />
   <style>
     :root{
       --bg:#07111f;
@@ -1338,8 +1338,8 @@ body.fullMeter .fullDash{
         <div class="brand">
           <div class="logo">Ü</div>
           <div>
-            <h1>ÜBERDO GO <span class="versionTag">v2.7b</span></h1>
-            <div class="sub" id="subtitle">Sistema listo para viajar · v2.7b</div>
+            <h1>ÜBERDO GO <span class="versionTag">v2.7c</span></h1>
+            <div class="sub" id="subtitle">Sistema listo para viajar · v2.7c</div>
           </div>
         </div>
         
@@ -1446,7 +1446,7 @@ body.fullMeter .fullDash{
   <div class="fullHint">Doble tap para volver</div>
 
 <script>
-const VERSION = "2.7.0";
+const VERSION = "2.7.3";
 const CACHE_LABEL = "remisimetro-gps";
 
 /* ---- Vibración táctil ---- */
@@ -2023,7 +2023,7 @@ async function hardRefreshApp(){
       const keys = await caches.keys();
       await Promise.all(keys.map(key => caches.delete(key)));
     }
-    const cleanUrl = location.origin + location.pathname + "?v=2.7b&t=" + Date.now();
+    const cleanUrl = location.origin + location.pathname + "?v=2.7c&t=" + Date.now();
     location.replace(cleanUrl);
   }catch(e){
     console.log(e);
@@ -2058,7 +2058,7 @@ if("serviceWorker" in navigator){
 // Mini diagnóstico visible en consola para instalación PWA.
 window.addEventListener("appinstalled", () => console.log("ÜBERDO GO instalado como PWA"));
 window.addEventListener("beforeinstallprompt", () => console.log("ÜBERDO GO listo para instalar"));
-console.log("ÜBERDO GO v2.7b cargado desde:", location.href);
+console.log("ÜBERDO GO v2.7c cargado desde:", location.href);
 
 </script>
 </body>
