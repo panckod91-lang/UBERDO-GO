@@ -446,7 +446,7 @@
       .trip{padding:8px}
     }
   
-/* v2.2 full meter layout fix */
+/* v2.4 full meter layout fix */
 body.fullMeter .app{
   width:100vw;
   height:100svh;
@@ -574,7 +574,7 @@ body.fullMeter .stat:nth-child(4){
 }
 
 
-/* v2.2 tablero polish REAL */
+/* v2.4 tablero polish REAL */
 .versionTag{font-size:12px;color:var(--muted);font-weight:900;margin-left:4px;vertical-align:middle}
 
 .stateFree{color:#a9b8cc !important}
@@ -655,7 +655,7 @@ body.fullMeter .controls{
 }
 
 
-/* v2.2 polish real */
+/* v2.4 polish real */
 .state{
   display:inline-flex;
   align-items:center;
@@ -782,7 +782,7 @@ body.fullMeter .controls{
   }
 }
 
-/* ===== v2.3 UI POLISH ===== */
+/* ===== v2.4 UI POLISH ===== */
 
 /* --- State badge animations --- */
 @keyframes stateIconPulse {
@@ -958,6 +958,283 @@ body.fullMeter .state {
   }
 }
 
+
+/* v2.4 TRUE FULL DASHBOARD */
+.fullDash{display:none}
+
+body.fullMeter{
+  overflow:hidden !important;
+  background:#03070d !important;
+}
+
+body.fullMeter .app,
+body.fullMeter .fullHint{
+  display:none !important;
+}
+
+body.fullMeter .fullDash{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) clamp(185px, 24vw, 330px);
+  grid-template-rows:minmax(0, 1fr) clamp(115px, 22svh, 195px);
+  grid-template-areas:
+    "fare actions"
+    "stats actions";
+  gap:12px;
+  padding:12px;
+  padding-bottom:calc(12px + env(safe-area-inset-bottom));
+  padding-top:calc(12px + env(safe-area-inset-top));
+  background:
+    radial-gradient(circle at 18% 12%, rgba(40,227,156,.15), transparent 42%),
+    radial-gradient(circle at 80% 70%, rgba(91,215,255,.08), transparent 36%),
+    linear-gradient(135deg,#02050a,#07111f 52%,#03070d);
+}
+
+.fullFare{
+  grid-area:fare;
+  min-width:0;
+  min-height:0;
+  border-radius:30px;
+  border:1px solid rgba(255,255,255,.10);
+  background:
+    radial-gradient(circle at 22% 40%, rgba(40,227,156,.13), transparent 43%),
+    linear-gradient(180deg,rgba(5,12,22,.96),rgba(2,6,12,.98));
+  box-shadow:0 28px 80px rgba(0,0,0,.45);
+  display:grid;
+  grid-template-rows:auto minmax(0,1fr) auto;
+  align-items:center;
+  padding:clamp(16px,2.6vw,32px);
+  overflow:hidden;
+}
+
+.fullLabel{
+  align-self:start;
+  color:#aebbd0;
+  font-weight:950;
+  letter-spacing:.18em;
+  font-size:clamp(12px,1.35vw,19px);
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+
+.fullTotal{
+  align-self:center;
+  justify-self:start;
+  width:100%;
+  color:#28e39c;
+  font-weight:1000;
+  line-height:.76;
+  letter-spacing:-.085em;
+  font-size:clamp(96px, 17vw, 245px);
+  text-shadow:0 0 38px rgba(40,227,156,.25);
+  white-space:nowrap;
+  overflow:hidden;
+  transform:translateX(-.04em);
+  font-variant-numeric:tabular-nums;
+}
+
+.fullState{
+  align-self:end;
+  justify-self:start;
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  width:max-content;
+  max-width:100%;
+  padding:7px 13px;
+  border-radius:999px;
+  font-size:clamp(17px,2.2vw,32px);
+  font-weight:950;
+  color:#a9b8cc;
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(255,255,255,.09);
+}
+
+.fullState.running{
+  color:#28e39c;
+  background:rgba(40,227,156,.10);
+  border-color:rgba(40,227,156,.25);
+  text-shadow:0 0 18px rgba(40,227,156,.22);
+}
+
+.fullState.paused{
+  color:#ffd166;
+  background:rgba(255,209,102,.10);
+  border-color:rgba(255,209,102,.25);
+}
+
+.fullActions{
+  grid-area:actions;
+  min-width:0;
+  min-height:0;
+  display:grid;
+  grid-template-columns:1fr;
+  grid-template-rows:repeat(4,1fr);
+  gap:10px;
+}
+
+.fullActions .btn{
+  height:100%;
+  min-height:0;
+  border-radius:24px;
+  font-size:clamp(18px,2.2vw,31px);
+  padding:8px;
+}
+
+.fullStats{
+  grid-area:stats;
+  min-width:0;
+  min-height:0;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.fullStat{
+  min-width:0;
+  min-height:0;
+  border-radius:22px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(255,255,255,.065);
+  padding:clamp(10px,1.8vw,20px);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  overflow:hidden;
+}
+
+.fullStat span{
+  color:#aebbd0;
+  font-size:clamp(11px,1.35vw,17px);
+  font-weight:950;
+  letter-spacing:.16em;
+}
+
+.fullStat b{
+  color:#f6fbff;
+  font-size:clamp(36px,5.1vw,76px);
+  line-height:1;
+  font-weight:900;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.fullTinyHint{
+  position:fixed;
+  left:50%;
+  bottom:calc(7px + env(safe-area-inset-bottom));
+  transform:translateX(-50%);
+  z-index:110;
+  padding:5px 10px;
+  border-radius:999px;
+  background:rgba(0,0,0,.42);
+  color:rgba(255,255,255,.66);
+  font-size:11px;
+  font-weight:850;
+  pointer-events:none;
+}
+
+@media (orientation:portrait){
+  body.fullMeter .fullDash{
+    grid-template-columns:1fr;
+    grid-template-rows:minmax(0, 1fr) auto auto;
+    grid-template-areas:
+      "fare"
+      "actions"
+      "stats";
+    gap:10px;
+    padding:10px;
+    padding-bottom:calc(10px + env(safe-area-inset-bottom));
+  }
+
+  .fullFare{
+    border-radius:28px;
+    padding:18px 20px;
+  }
+
+  .fullTotal{
+    font-size:clamp(86px, 25vw, 170px);
+    line-height:.82;
+  }
+
+  .fullState{
+    font-size:clamp(19px,5.5vw,34px);
+  }
+
+  .fullActions{
+    grid-template-columns:repeat(2,1fr);
+    grid-template-rows:repeat(2,72px);
+    gap:10px;
+  }
+
+  .fullActions .btn{
+    font-size:20px;
+    border-radius:22px;
+  }
+
+  .fullStats{
+    grid-template-columns:1fr;
+    gap:9px;
+  }
+
+  .fullStat{
+    padding:13px 18px;
+  }
+
+  .fullStat b{
+    font-size:clamp(36px,10vw,70px);
+  }
+}
+
+@media (orientation:landscape) and (max-height:520px){
+  body.fullMeter .fullDash{
+    grid-template-rows:minmax(0, 1fr) clamp(102px, 21svh, 145px);
+    gap:9px;
+    padding:9px 12px;
+  }
+
+  .fullFare{
+    border-radius:26px;
+    padding:12px 22px 10px;
+  }
+
+  .fullTotal{
+    font-size:clamp(92px, 16.4vw, 215px);
+    line-height:.73;
+  }
+
+  .fullLabel{
+    font-size:clamp(11px,1.25vw,17px);
+  }
+
+  .fullState{
+    font-size:clamp(16px,1.95vw,26px);
+    padding:5px 11px;
+  }
+
+  .fullActions{
+    gap:8px;
+  }
+
+  .fullActions .btn{
+    border-radius:21px;
+    font-size:clamp(17px,2.05vw,28px);
+  }
+
+  .fullStat{
+    border-radius:20px;
+    padding:9px 15px;
+  }
+
+  .fullStat b{
+    font-size:clamp(34px,4.8vw,66px);
+  }
+}
+
 </style>
 </head>
 <body>
@@ -967,8 +1244,8 @@ body.fullMeter .state {
         <div class="brand">
           <div class="logo">Ü</div>
           <div>
-            <h1>ÜBERDO GO <span class="versionTag">v2.3</span></h1>
-            <div class="sub" id="subtitle">Sistema listo para viajar · v2.3</div>
+            <h1>ÜBERDO GO <span class="versionTag">v2.4</span></h1>
+            <div class="sub" id="subtitle">Sistema listo para viajar · v2.4</div>
           </div>
         </div>
         
@@ -1044,10 +1321,34 @@ body.fullMeter .state {
       <div class="history" id="history"></div>
     </aside>
   </main>
+
+  <section class="fullDash" id="fullDash" aria-label="Tablero fullscreen">
+    <div class="fullFare" id="fullFareBox">
+      <div class="fullLabel">TOTAL DEL VIAJE</div>
+      <div class="fullTotal" id="fullTotal">$0</div>
+      <div class="fullState" id="fullState">○ Libre</div>
+    </div>
+
+    <div class="fullActions">
+      <button class="btn start" id="fullStartBtn">Iniciar</button>
+      <button class="btn pause" id="fullPauseBtn">Pausar</button>
+      <button class="btn finish" id="fullFinishBtn">Finalizar</button>
+      <button class="btn danger" id="fullResetBtn">Reset</button>
+    </div>
+
+    <div class="fullStats">
+      <div class="fullStat"><span>KM</span><b id="fullKm">0.000</b></div>
+      <div class="fullStat"><span>TIEMPO</span><b id="fullTime">00:00</b></div>
+      <div class="fullStat"><span>VELOCIDAD</span><b id="fullSpeed">0</b></div>
+    </div>
+
+    <div class="fullTinyHint">Doble tap para volver</div>
+  </section>
+
   <div class="fullHint">Doble tap para volver</div>
 
 <script>
-const VERSION = "2.3.0";
+const VERSION = "2.4.0";
 const CACHE_LABEL = "remisimetro-gps";
 
 /* ---- Vibración táctil ---- */
@@ -1203,6 +1504,30 @@ function setGpsStatus(text, mode){
   $("gpsDot").className = "dot " + (mode || "");
 }
 
+
+function updateFullDashboard(){
+  const fullTotal = document.getElementById("fullTotal");
+  if(!fullTotal) return;
+
+  fullTotal.textContent = money(calcTotal());
+  document.getElementById("fullKm").textContent = (distanceMeters/1000).toFixed(3);
+  document.getElementById("fullTime").textContent = formatTime(elapsedSeconds);
+  document.getElementById("fullSpeed").textContent = Math.round(currentSpeed || 0);
+
+  const st = document.getElementById("fullState");
+  st.classList.remove("running","paused");
+
+  if(!isRunning){
+    st.textContent = "○ Libre";
+  }else if(isPaused){
+    st.textContent = "⏸ Pausado";
+    st.classList.add("paused");
+  }else{
+    st.textContent = "▶ En viaje";
+    st.classList.add("running");
+  }
+}
+
 function updateUI(){
   $("total").textContent = money(calcTotal());
   $("km").textContent = (distanceMeters/1000).toFixed(3);
@@ -1224,6 +1549,7 @@ function updateUI(){
     stEl.innerHTML = `<span class="stateIcon stateIconPulse">●</span> En viaje`;
     $("subtitle").textContent = "Midiendo con GPS";
   }
+  updateFullDashboard();
 }
 
 function startRide(){
@@ -1299,7 +1625,20 @@ function finishRide(){
   };
   saveTrip(trip);
   resetRide(false);
-  renderHistory();
+  
+const fullStartBtn = document.getElementById("fullStartBtn");
+if(fullStartBtn){
+  fullStartBtn.onclick = startRide;
+  document.getElementById("fullPauseBtn").onclick = pauseRide;
+  document.getElementById("fullFinishBtn").onclick = finishRide;
+  document.getElementById("fullResetBtn").onclick = () => resetRide(true);
+  document.getElementById("fullDash").addEventListener("click", (e) => {
+    if(e.target.closest("button")) return;
+    handleFareTap();
+  });
+}
+
+renderHistory();
   toast("Viaje guardado");
 }
 
@@ -1459,7 +1798,7 @@ async function hardRefreshApp(){
       const keys = await caches.keys();
       await Promise.all(keys.map(key => caches.delete(key)));
     }
-    const cleanUrl = location.origin + location.pathname + "?v=2.0&t=" + Date.now();
+    const cleanUrl = location.origin + location.pathname + "?v=2.4&t=" + Date.now();
     location.replace(cleanUrl);
   }catch(e){
     console.log(e);
@@ -1492,7 +1831,7 @@ if("serviceWorker" in navigator){
 // Mini diagnóstico visible en consola para instalación PWA.
 window.addEventListener("appinstalled", () => console.log("ÜBERDO GO instalado como PWA"));
 window.addEventListener("beforeinstallprompt", () => console.log("ÜBERDO GO listo para instalar"));
-console.log("ÜBERDO GO v2.3 cargado desde:", location.href);
+console.log("ÜBERDO GO v2.4 cargado desde:", location.href);
 
 </script>
 </body>

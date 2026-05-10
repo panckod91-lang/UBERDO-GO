@@ -1,12 +1,10 @@
-# ÜBERDO GO v2.2
+# ÜBERDO GO v2.4
 
-Cambios:
-- Versión visible: v2.2.
-- Tarjeta de tarifa más compacta.
-- Tarifa mejor ubicada.
-- Menos separación en modo doble tap.
-- Estados diferenciados con color e icono:
-  - ○ Libre
-  - ▶ En viaje
-  - ⏸ Pausado
-- Cache: uberdo-go-v22-polish-real.
+Modo doble tap rediseñado de cero:
+- Dashboard fullscreen separado.
+- Landscape: tarifa gigante izquierda, botones derecha, stats abajo.
+- Portrait: tarifa arriba, botones debajo, stats abajo.
+- No depende del layout normal.
+
+Cache:
+- uberdo-go-v24-true-full-dashboard
