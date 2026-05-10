@@ -1,13 +1,12 @@
-# ÜBERDO GO v2.1b REAL
+# ÜBERDO GO v2.2
 
-Esta versión corrige el armado fallido de la 2.1.
-
-Cambios reales en index.html:
-- Versión visible: v2.1b.
-- “Total estimado” → “Total del viaje”.
-- Estados con icono/color:
+Cambios:
+- Versión visible: v2.2.
+- Tarjeta de tarifa más compacta.
+- Tarifa mejor ubicada.
+- Menos separación en modo doble tap.
+- Estados diferenciados con color e icono:
   - ○ Libre
   - ▶ En viaje
   - ⏸ Pausado
-- Ajustes visuales del tablero full.
-- Cache: uberdo-go-v21b-real.
+- Cache: uberdo-go-v22-polish-real.

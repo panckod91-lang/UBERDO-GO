@@ -446,7 +446,7 @@
       .trip{padding:8px}
     }
   
-/* v2.1b full meter layout fix */
+/* v2.2 full meter layout fix */
 body.fullMeter .app{
   width:100vw;
   height:100svh;
@@ -574,7 +574,7 @@ body.fullMeter .stat:nth-child(4){
 }
 
 
-/* v2.1b tablero polish REAL */
+/* v2.2 tablero polish REAL */
 .versionTag{font-size:12px;color:var(--muted);font-weight:900;margin-left:4px;vertical-align:middle}
 
 .stateFree{color:#a9b8cc !important}
@@ -654,6 +654,134 @@ body.fullMeter .controls{
   }
 }
 
+
+/* v2.2 polish real */
+.state{
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  width:max-content;
+  padding:7px 12px;
+  border-radius:999px;
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(255,255,255,.09);
+  font-weight:950;
+}
+.stateIcon{
+  display:inline-grid;
+  place-items:center;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  font-size:.86em;
+}
+.stateFree{color:#a9b8cc !important}
+.stateFree .stateIcon{background:rgba(169,184,204,.14);color:#a9b8cc}
+.stateRunning{
+  color:#28e39c !important;
+  background:rgba(40,227,156,.10);
+  border-color:rgba(40,227,156,.22);
+  text-shadow:0 0 18px rgba(40,227,156,.25);
+}
+.stateRunning .stateIcon{background:rgba(40,227,156,.22);color:#28e39c}
+.statePaused{
+  color:#ffd166 !important;
+  background:rgba(255,209,102,.10);
+  border-color:rgba(255,209,102,.25);
+}
+.statePaused .stateIcon{background:rgba(255,209,102,.22);color:#ffd166}
+
+.fareBox{
+  gap:4px;
+}
+.fareBox .label{
+  color:#aebbd0;
+  margin-bottom:0;
+}
+.fare{
+  letter-spacing:-.06em;
+  transform:translateX(-4px);
+}
+
+/* normal vertical */
+@media (orientation:portrait){
+  .fareBox{
+    min-height:235px;
+    justify-content:center;
+  }
+  .fare{
+    font-size:clamp(68px,20vw,122px);
+    line-height:.84;
+  }
+}
+
+/* doble tap horizontal */
+body.fullMeter .meter{
+  grid-template-rows:minmax(0,1fr) auto !important;
+  gap:7px !important;
+  padding:10px 14px 8px !important;
+}
+body.fullMeter .topMeterArea{
+  gap:14px !important;
+}
+body.fullMeter .fareBox{
+  justify-content:center !important;
+  align-items:flex-start !important;
+  padding:18px 26px 14px 30px !important;
+  gap:3px !important;
+}
+body.fullMeter .fareBox .label{
+  font-size:clamp(12px,1.45vw,19px) !important;
+  letter-spacing:.18em !important;
+}
+body.fullMeter .fare{
+  font-size:clamp(82px,11.3vw,148px) !important;
+  line-height:.82 !important;
+  letter-spacing:-.075em !important;
+  transform:translateX(-7px) !important;
+  white-space:nowrap !important;
+  max-width:100% !important;
+}
+body.fullMeter .state{
+  font-size:clamp(17px,2.1vw,29px) !important;
+  margin-top:2px !important;
+  padding:6px 12px !important;
+}
+body.fullMeter .gridStats{
+  gap:9px !important;
+}
+body.fullMeter .stat{
+  padding:11px 18px !important;
+}
+body.fullMeter .stat b{
+  font-size:clamp(34px,5.1vw,70px) !important;
+}
+body.fullMeter .controls{
+  gap:10px !important;
+}
+
+/* doble tap vertical */
+@media (orientation:portrait){
+  body.fullMeter .meter{
+    padding:10px !important;
+    gap:9px !important;
+  }
+  body.fullMeter .fareBox{
+    min-height:245px !important;
+    padding:18px 20px !important;
+  }
+  body.fullMeter .fare{
+    font-size:clamp(82px,22vw,146px) !important;
+    line-height:.84 !important;
+  }
+  body.fullMeter .state{
+    font-size:clamp(19px,5.5vw,32px) !important;
+  }
+  body.fullMeter .controls{
+    grid-template-rows:repeat(2,70px) !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -663,8 +791,8 @@ body.fullMeter .controls{
         <div class="brand">
           <div class="logo">Ü</div>
           <div>
-            <h1>ÜBERDO GO <span class="versionTag">v2.1b</span></h1>
-            <div class="sub" id="subtitle">Sistema listo para viajar · rotación libre v2.1b</div>
+            <h1>ÜBERDO GO <span class="versionTag">v2.2</span></h1>
+            <div class="sub" id="subtitle">Sistema listo para viajar · rotación libre v2.2</div>
           </div>
         </div>
         
@@ -740,7 +868,7 @@ body.fullMeter .controls{
   <div class="fullHint">Doble tap para volver</div>
 
 <script>
-const VERSION = "2.1b";
+const VERSION = "2.2.0";
 const CACHE_LABEL = "remisimetro-gps";
 
 let watchId = null;
@@ -1124,7 +1252,7 @@ if("serviceWorker" in navigator){
 // Mini diagnóstico visible en consola para instalación PWA.
 window.addEventListener("appinstalled", () => console.log("ÜBERDO GO instalado como PWA"));
 window.addEventListener("beforeinstallprompt", () => console.log("ÜBERDO GO listo para instalar"));
-console.log("ÜBERDO GO v2.1b cargado desde:", location.href);
+console.log("ÜBERDO GO v2.2 cargado desde:", location.href);
 
 </script>
 </body>
