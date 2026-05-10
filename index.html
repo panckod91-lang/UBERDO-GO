@@ -288,8 +288,8 @@
         <div class="brand">
           <div class="logo">Ü</div>
           <div>
-            <h1>ÜBERDO GO <span class="versionTag">v1.6</span></h1>
-            <div class="sub" id="subtitle">Sistema listo para viajar</div>
+            <h1>ÜBERDO GO <span class="versionTag">v1.7</span></h1>
+            <div class="sub" id="subtitle">Sistema listo para viajar · rotación libre v1.7</div>
           </div>
         </div>
         
@@ -361,7 +361,7 @@
   </main>
 
 <script>
-const VERSION = "1.6.0";
+const VERSION = "1.7.0";
 const CACHE_LABEL = "remisimetro-gps";
 
 let watchId = null;
@@ -673,7 +673,7 @@ async function hardRefreshApp(){
       const keys = await caches.keys();
       await Promise.all(keys.map(key => caches.delete(key)));
     }
-    const cleanUrl = location.origin + location.pathname + "?v=1.6&t=" + Date.now();
+    const cleanUrl = location.origin + location.pathname + "?v=1.7&t=" + Date.now();
     location.replace(cleanUrl);
   }catch(e){
     console.log(e);
@@ -703,7 +703,7 @@ if("serviceWorker" in navigator){
 // Mini diagnóstico visible en consola para instalación PWA.
 window.addEventListener("appinstalled", () => console.log("ÜBERDO GO instalado como PWA"));
 window.addEventListener("beforeinstallprompt", () => console.log("ÜBERDO GO listo para instalar"));
-console.log("ÜBERDO GO v1.6.0 cargado desde:", location.href);
+console.log("ÜBERDO GO v1.7.0 cargado desde:", location.href);
 
 </script>
 </body>

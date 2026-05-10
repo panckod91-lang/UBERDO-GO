@@ -1,4 +1,4 @@
-const CACHE_NAME = "uberdo-go-v16-rotate-clean";
+const CACHE_NAME = "uberdo-go-v17-no-orientation";
 const ASSETS = [
   "./",
   "./index.html",

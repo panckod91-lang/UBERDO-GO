@@ -1,14 +1,11 @@
-# ÜBERDO GO v1.6
+# ÜBERDO GO v1.7
 
 Cambios:
-- Versión visible correcta: v1.6.
-- Botón actualizar sin confirmación molesta.
-- Manifest orientation: any.
-- Layout vertical y horizontal.
-- Panel derecho con scroll en horizontal.
-- Cache: uberdo-go-v16-rotate-clean.
+- Se eliminó por completo la propiedad orientation del manifest.
+- Versión visible: v1.7.
+- Cache: uberdo-go-v17-no-orientation.
+- start_url: ./index.html?v=1.7.
 
-Para probar:
-1. Reemplazar archivos en GitHub.
-2. Abrir URL con ?v=1.6 desde Chrome.
-3. Desinstalar app anterior e instalar de nuevo si el ícono sigue viejo.
+Importante:
+Android solo rota si la rotación automática del sistema está activada.
+Si la app instalada venía de una versión con orientación fija, desinstalar y reinstalar.
