@@ -786,140 +786,176 @@ body.fullMeter .controls{
 
 /* --- State badge animations --- */
 @keyframes stateIconPulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50%       { transform: scale(1.35); opacity: .75; }
+  0%,100% { transform:scale(1);   opacity:1   }
+  50%      { transform:scale(1.4); opacity:.7  }
 }
 @keyframes stateIconBlink {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: .3; }
+  0%,100% { opacity:1  }
+  50%      { opacity:.25 }
 }
 
 .stateIcon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  font-size: .82em;
-  line-height: 1;
-  flex-shrink: 0;
+  display:inline-flex; align-items:center; justify-content:center;
+  width:22px; height:22px; border-radius:50%;
+  font-size:.82em; line-height:1; flex-shrink:0;
 }
+.stateIconPulse { animation:stateIconPulse 1.2s ease-in-out infinite }
+.stateIconBlink  { animation:stateIconBlink  1.8s ease-in-out infinite }
 
-.stateIconPulse {
-  animation: stateIconPulse 1.2s ease-in-out infinite;
-}
-.stateIconBlink {
-  animation: stateIconBlink 1.8s ease-in-out infinite;
-}
+/* State color overrides */
+.stateFree    { color:#8899b0!important; background:rgba(255,255,255,.04)!important; border-color:rgba(255,255,255,.07)!important }
+.stateFree    .stateIcon { background:rgba(169,184,204,.12); color:#8899b0 }
+.stateRunning { color:#28e39c!important; background:rgba(40,227,156,.12)!important; border-color:rgba(40,227,156,.28)!important; text-shadow:0 0 22px rgba(40,227,156,.32)!important }
+.stateRunning .stateIcon { background:rgba(40,227,156,.25); color:#28e39c }
+.statePaused  { color:#ffd166!important; background:rgba(255,209,102,.12)!important; border-color:rgba(255,209,102,.30)!important }
+.statePaused  .stateIcon { background:rgba(255,209,102,.24); color:#ffd166 }
 
-/* State-specific overrides (icon bg + text glow) */
-.stateFree {
-  color: #8899b0 !important;
-  background: rgba(255,255,255,.045) !important;
-  border-color: rgba(255,255,255,.07) !important;
-}
-.stateFree .stateIcon {
-  background: rgba(169,184,204,.12);
-  color: #8899b0;
-}
+/* State badge: never wraps */
+.state { white-space:nowrap; max-width:max-content }
 
-.stateRunning {
-  color: #28e39c !important;
-  background: rgba(40,227,156,.11) !important;
-  border-color: rgba(40,227,156,.26) !important;
-  text-shadow: 0 0 20px rgba(40,227,156,.3) !important;
-}
-.stateRunning .stateIcon {
-  background: rgba(40,227,156,.24);
-  color: #28e39c;
-}
-
-.statePaused {
-  color: #ffd166 !important;
-  background: rgba(255,209,102,.11) !important;
-  border-color: rgba(255,209,102,.28) !important;
-}
-.statePaused .stateIcon {
-  background: rgba(255,209,102,.22);
-  color: #ffd166;
-}
-
-/* --- Portrait normal: fareBox more breathing room --- */
+/* =========================================================
+   PORTRAIT — NORMAL VIEW
+   ========================================================= */
 @media (orientation:portrait) {
   .fareBox {
-    min-height: 230px !important;
-    padding: 22px 20px !important;
-    gap: 10px !important;
-    justify-content: center !important;
+    min-height:220px !important;
+    padding:22px 18px 18px !important;
+    gap:10px !important;
+    justify-content:center !important;
   }
   .fareBox .label {
-    font-size: 13px !important;
-    letter-spacing: .16em !important;
-    margin-bottom: 2px !important;
+    font-size:13px !important;
+    letter-spacing:.16em !important;
   }
   .fare {
-    font-size: clamp(68px, 20vw, 118px) !important;
-    line-height: .84 !important;
-    letter-spacing: -.055em !important;
-    transform: translateX(-3px) !important;
+    font-size:clamp(70px,20vw,116px) !important;
+    line-height:.84 !important;
+    letter-spacing:-.055em !important;
+    transform:translateX(-2px) !important;
   }
   .state {
-    margin-top: 4px !important;
-    font-size: 14px !important;
-    padding: 7px 14px !important;
+    margin-top:4px !important;
+    font-size:14px !important;
+    padding:7px 14px !important;
   }
 }
 
-/* --- fullMeter portrait: bigger fare, cleaner layout --- */
-@media (orientation:portrait) {
-  body.fullMeter .fareBox {
-    min-height: 270px !important;
-    padding: 24px 22px !important;
-    gap: 10px !important;
-    justify-content: center !important;
+/* =========================================================
+   LANDSCAPE — NORMAL VIEW (non-fullMeter)
+   ========================================================= */
+@media (orientation:landscape) {
+  body:not(.fullMeter) header {
+    padding-bottom:10px !important;
   }
-  body.fullMeter .fare {
-    font-size: clamp(90px, 26vw, 162px) !important;
-    line-height: .82 !important;
-    letter-spacing: -.07em !important;
+  body:not(.fullMeter) .meter {
+    padding-top:6px !important;
   }
-  body.fullMeter .state {
-    font-size: clamp(17px, 5vw, 28px) !important;
-    margin-top: 8px !important;
-    padding: 7px 14px !important;
+  body:not(.fullMeter) .fareBox {
+    padding:14px 16px !important;
+    gap:7px !important;
+    min-height:0 !important;
   }
-  body.fullMeter .fareBox .label {
-    font-size: clamp(13px, 3.5vw, 18px) !important;
-    letter-spacing: .18em !important;
+  body:not(.fullMeter) .fareBox .label {
+    font-size:11px !important;
+    letter-spacing:.14em !important;
+  }
+  body:not(.fullMeter) .fare {
+    font-size:clamp(46px,8.5vw,100px) !important;
+    line-height:.86 !important;
+    letter-spacing:-.055em !important;
+  }
+  body:not(.fullMeter) .state {
+    font-size:clamp(12px,2vw,18px) !important;
+    padding:5px 12px !important;
+    margin-top:2px !important;
   }
 }
 
-/* --- fullMeter landscape: maximize fareBox and fare --- */
+/* =========================================================
+   FULLMETER — LANDSCAPE
+   fareBox must stretch to fill topMeterArea height
+   ========================================================= */
+body.fullMeter .topMeterArea {
+  align-items:stretch !important;
+}
 body.fullMeter .fareBox {
-  gap: 8px !important;
-  padding: 20px 28px 16px 32px !important;
+  align-self:stretch !important;
+  flex:1 !important;
+  min-height:0 !important;
+  padding:20px 26px 16px 30px !important;
+  gap:8px !important;
+  justify-content:center !important;
+}
+body.fullMeter .controls {
+  align-self:stretch !important;
+  height:100% !important;
 }
 body.fullMeter .fare {
-  font-size: clamp(86px, 12.5vw, 164px) !important;
-  line-height: .80 !important;
-  letter-spacing: -.075em !important;
-  transform: translateX(-8px) !important;
+  font-size:clamp(88px,12.8vw,168px) !important;
+  line-height:.80 !important;
+  letter-spacing:-.075em !important;
+  transform:translateX(-8px) !important;
 }
 body.fullMeter .fareBox .label {
-  font-size: clamp(12px, 1.5vw, 20px) !important;
-  letter-spacing: .18em !important;
+  font-size:clamp(12px,1.5vw,20px) !important;
+  letter-spacing:.18em !important;
 }
 body.fullMeter .state {
-  font-size: clamp(16px, 2.2vw, 30px) !important;
-  margin-top: 6px !important;
-  padding: 7px 14px !important;
+  font-size:clamp(16px,2.2vw,30px) !important;
+  margin-top:6px !important;
+  padding:7px 14px !important;
 }
 
-/* Ensure state badge never wraps */
-.state {
-  white-space: nowrap;
-  max-width: max-content;
+/* =========================================================
+   FULLMETER — PORTRAIT
+   fareBox must grow to fill the column (flex:1)
+   ========================================================= */
+@media (orientation:portrait) {
+  body.fullMeter .meter {
+    padding:10px 12px 8px !important;
+    gap:9px !important;
+    grid-template-rows:minmax(0,1fr) auto !important;
+  }
+  body.fullMeter .topMeterArea {
+    display:flex !important;
+    flex-direction:column !important;
+    flex:1 !important;
+    min-height:0 !important;
+    height:100% !important;
+    gap:10px !important;
+    align-items:stretch !important;
+  }
+  body.fullMeter .fareBox {
+    flex:1 !important;
+    min-height:0 !important;
+    height:auto !important;
+    padding:26px 22px 20px !important;
+    gap:14px !important;
+    justify-content:center !important;
+  }
+  body.fullMeter .fare {
+    font-size:clamp(96px,27vw,175px) !important;
+    line-height:.80 !important;
+    letter-spacing:-.07em !important;
+    transform:translateX(-4px) !important;
+  }
+  body.fullMeter .fareBox .label {
+    font-size:clamp(13px,3.6vw,19px) !important;
+    letter-spacing:.18em !important;
+  }
+  body.fullMeter .state {
+    font-size:clamp(17px,5.2vw,30px) !important;
+    margin-top:8px !important;
+    padding:8px 16px !important;
+  }
+  body.fullMeter .controls {
+    flex:0 0 auto !important;
+    height:auto !important;
+    grid-template-columns:repeat(2,1fr) !important;
+    grid-template-rows:repeat(2,72px) !important;
+    gap:10px !important;
+    align-self:auto !important;
+  }
 }
 
 </style>
@@ -931,8 +967,8 @@ body.fullMeter .state {
         <div class="brand">
           <div class="logo">Ü</div>
           <div>
-            <h1>ÜBERDO GO <span class="versionTag">v2.2</span></h1>
-            <div class="sub" id="subtitle">Sistema listo para viajar · rotación libre v2.2</div>
+            <h1>ÜBERDO GO <span class="versionTag">v2.3</span></h1>
+            <div class="sub" id="subtitle">Sistema listo para viajar · v2.3</div>
           </div>
         </div>
         
@@ -1000,7 +1036,10 @@ body.fullMeter .state {
 
       <div class="sectionTitle">
         <h2>Historial</h2>
-        <button class="miniBtn" id="clearHistoryBtn">Limpiar</button>
+        <div style="display:flex;gap:6px">
+          <button class="miniBtn" id="exportHistoryBtn">Exportar CSV</button>
+          <button class="miniBtn" id="clearHistoryBtn">Limpiar</button>
+        </div>
       </div>
       <div class="history" id="history"></div>
     </aside>
@@ -1008,8 +1047,55 @@ body.fullMeter .state {
   <div class="fullHint">Doble tap para volver</div>
 
 <script>
-const VERSION = "2.2.0";
+const VERSION = "2.3.0";
 const CACHE_LABEL = "remisimetro-gps";
+
+/* ---- Vibración táctil ---- */
+function vibe(pattern){ if("vibrate" in navigator) navigator.vibrate(pattern) }
+
+/* ---- Session recovery (Android mata el tab) ---- */
+function saveSession(){
+  if(!isRunning){ sessionStorage.removeItem("uberdo_s"); return; }
+  sessionStorage.setItem("uberdo_s", JSON.stringify({
+    isRunning, isPaused, elapsedSeconds:Math.round(elapsedSeconds),
+    distanceMeters, savedAt:Date.now()
+  }));
+}
+function tryRestoreSession(){
+  try{
+    const raw = sessionStorage.getItem("uberdo_s");
+    if(!raw) return;
+    const s = JSON.parse(raw);
+    if(!s.isRunning || (Date.now()-s.savedAt)>600000){ sessionStorage.removeItem("uberdo_s"); return; }
+    isRunning=true; isPaused=s.isPaused;
+    elapsedSeconds=s.elapsedSeconds; distanceMeters=s.distanceMeters;
+    sessionStorage.removeItem("uberdo_s");
+    startTimer();
+    if(!isPaused){
+      watchId=navigator.geolocation.watchPosition(onPosition,onGpsError,
+        {enableHighAccuracy:true,maximumAge:1000,timeout:12000});
+      setGpsStatus("Reconectando GPS...","");
+    }
+    updateUI(); toast("↩ Viaje retomado");
+  }catch(e){ sessionStorage.removeItem("uberdo_s"); }
+}
+
+/* ---- Exportar historial a CSV ---- */
+function exportCSV(){
+  const list=getHistory();
+  if(!list.length){ toast("Sin viajes en el historial"); return; }
+  const hdr="Fecha,Total ($),KM,Tiempo,Destino";
+  const rows=list.map(t=>{
+    const d=new Date(t.date);
+    const f=d.toLocaleDateString("es-AR")+" "+d.toLocaleTimeString("es-AR",{hour:"2-digit",minute:"2-digit"});
+    return `"${f}",${Math.round(t.total)},${(t.meters/1000).toFixed(2)},${formatTime(t.seconds)},"${(t.destination||"").replace(/,/g," ")}"`;
+  });
+  const blob=new Blob(["\uFEFF"+[hdr,...rows].join("\n")],{type:"text/csv;charset=utf-8;"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url; a.download=`viajes_uberdo_${new Date().toLocaleDateString("es-AR").replace(/\//g,"-")}.csv`;
+  a.click(); URL.revokeObjectURL(url); toast("CSV descargado ✓");
+}
 
 let watchId = null;
 let isRunning = false;
@@ -1143,6 +1229,7 @@ function updateUI(){
 function startRide(){
   if(isRunning && isPaused){
     isPaused = false;
+    vibe([80,40,160]);
     startTimer();
     updateUI();
     return;
@@ -1165,6 +1252,7 @@ function startRide(){
   currentAccuracy = null;
 
   setGpsStatus("Pidiendo GPS...", "");
+  vibe([80, 40, 160]);
   startTimer();
 
   watchId = navigator.geolocation.watchPosition(onPosition, onGpsError, {
@@ -1182,6 +1270,7 @@ function startTimer(){
     if(isRunning && !isPaused){
       elapsedSeconds++;
       updateUI();
+      saveSession();
     }
   }, 1000);
 }
@@ -1189,6 +1278,7 @@ function startTimer(){
 function pauseRide(){
   if(!isRunning) return;
   isPaused = !isPaused;
+  vibe([60]);
   updateUI();
 }
 
@@ -1197,6 +1287,8 @@ function finishRide(){
   isPaused = true;
   clearInterval(timer);
   if(watchId !== null) navigator.geolocation.clearWatch(watchId);
+  vibe([100, 50, 100, 50, 250]);
+  saveSession(); // limpia la sesión (isRunning queda false tras resetRide)
 
   const trip = {
     date: new Date().toISOString(),
@@ -1213,6 +1305,7 @@ function finishRide(){
 
 function resetRide(confirmAsk = true){
   if(confirmAsk && isRunning && !confirm("¿Resetear el viaje actual?")) return;
+  vibe([40]);
   clearInterval(timer);
   if(watchId !== null) navigator.geolocation.clearWatch(watchId);
   watchId = null;
@@ -1224,6 +1317,7 @@ function resetRide(confirmAsk = true){
   lastPoint = null;
   currentSpeed = 0;
   currentAccuracy = null;
+  sessionStorage.removeItem("uberdo_s");
   updateUI();
 }
 
@@ -1380,12 +1474,14 @@ $("resetBtn").onclick = () => resetRide(true);
 $("mapsBtn").onclick = () => mapsUrl("google");
 $("wazeBtn").onclick = () => mapsUrl("waze");
 $("saveFareBtn").onclick = saveFare;
+$("exportHistoryBtn").onclick = exportCSV;
 $("clearHistoryBtn").onclick = clearHistory;
 $("refreshBtn").onclick = hardRefreshApp;
 
 paintFare();
 renderHistory();
 updateUI();
+tryRestoreSession();
 
 if("serviceWorker" in navigator){
   window.addEventListener("load", () => {
@@ -1396,7 +1492,7 @@ if("serviceWorker" in navigator){
 // Mini diagnóstico visible en consola para instalación PWA.
 window.addEventListener("appinstalled", () => console.log("ÜBERDO GO instalado como PWA"));
 window.addEventListener("beforeinstallprompt", () => console.log("ÜBERDO GO listo para instalar"));
-console.log("ÜBERDO GO v2.2 cargado desde:", location.href);
+console.log("ÜBERDO GO v2.3 cargado desde:", location.href);
 
 </script>
 </body>
