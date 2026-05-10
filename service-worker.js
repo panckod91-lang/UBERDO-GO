@@ -1,4 +1,4 @@
-const CACHE_NAME = "uberdo-go-v27a-safe-max-fares";
+const CACHE_NAME = "uberdo-go-v27b";
 const ASSETS = [
   "./",
   "./index.html",
@@ -30,7 +30,6 @@ self.addEventListener("fetch", event => {
     );
     return;
   }
-
   event.respondWith(
     caches.match(event.request).then(cached => cached || fetch(event.request))
   );

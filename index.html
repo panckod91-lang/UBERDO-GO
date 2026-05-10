@@ -1306,8 +1306,8 @@ body.fullMeter .fullDash{
         <div class="brand">
           <div class="logo">Ü</div>
           <div>
-            <h1>ÜBERDO GO <span class="versionTag">v2.7</span></h1>
-            <div class="sub" id="subtitle">Sistema listo para viajar · v2.7</div>
+            <h1>ÜBERDO GO <span class="versionTag">v2.7b</span></h1>
+            <div class="sub" id="subtitle">Sistema listo para viajar · v2.7b</div>
           </div>
         </div>
         
@@ -1961,7 +1961,7 @@ async function hardRefreshApp(){
       const keys = await caches.keys();
       await Promise.all(keys.map(key => caches.delete(key)));
     }
-    const cleanUrl = location.origin + location.pathname + "?v=2.7&t=" + Date.now();
+    const cleanUrl = location.origin + location.pathname + "?v=2.7b&t=" + Date.now();
     location.replace(cleanUrl);
   }catch(e){
     console.log(e);
@@ -1995,7 +1995,7 @@ if("serviceWorker" in navigator){
 // Mini diagnóstico visible en consola para instalación PWA.
 window.addEventListener("appinstalled", () => console.log("ÜBERDO GO instalado como PWA"));
 window.addEventListener("beforeinstallprompt", () => console.log("ÜBERDO GO listo para instalar"));
-console.log("ÜBERDO GO v2.7 cargado desde:", location.href);
+console.log("ÜBERDO GO v2.7b cargado desde:", location.href);
 
 </script>
 </body>
