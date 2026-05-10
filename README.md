@@ -1,12 +1,11 @@
-# ÜBERDO GO v2.6
+# ÜBERDO GO v2.7
 
-Objetivo: estabilidad.
+Base: v2.4 funcional.
 
 Cambios:
-- Botón MAX (⛶) en la pantalla normal.
+- MAX se mueve dentro de la tarjeta de tarifa, arriba a la derecha.
 - Botón Salir en dashboard full.
-- Los controles full usan evento global en captura (`pointerup`) para evitar capas bloqueando botones.
-- No depende del fullscreen real del navegador.
-- El doble tap queda como extra.
-- Manifest: display standalone.
-- Cache: uberdo-go-v26-stable-max.
+- Sanitiza tarifas guardadas: si una versión rota dejó todo en cero, vuelve a defaults.
+- Mantiene historial y tarifas válidas.
+- No usa fullscreen real del navegador.
+- Cache: uberdo-go-v27-safe-max-fares.

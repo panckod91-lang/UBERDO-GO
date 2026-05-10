@@ -446,7 +446,7 @@
       .trip{padding:8px}
     }
   
-/* v2.6 full meter layout fix */
+/* v2.7 full meter layout fix */
 body.fullMeter .app{
   width:100vw;
   height:100svh;
@@ -574,7 +574,7 @@ body.fullMeter .stat:nth-child(4){
 }
 
 
-/* v2.6 tablero polish REAL */
+/* v2.7 tablero polish REAL */
 .versionTag{font-size:12px;color:var(--muted);font-weight:900;margin-left:4px;vertical-align:middle}
 
 .stateFree{color:#a9b8cc !important}
@@ -655,7 +655,7 @@ body.fullMeter .controls{
 }
 
 
-/* v2.6 polish real */
+/* v2.7 polish real */
 .state{
   display:inline-flex;
   align-items:center;
@@ -782,7 +782,7 @@ body.fullMeter .controls{
   }
 }
 
-/* ===== v2.6 UI POLISH ===== */
+/* ===== v2.7 UI POLISH ===== */
 
 /* --- State badge animations --- */
 @keyframes stateIconPulse {
@@ -959,7 +959,7 @@ body.fullMeter .state {
 }
 
 
-/* v2.6 TRUE FULL DASHBOARD */
+/* v2.7 TRUE FULL DASHBOARD */
 .fullDash{display:none}
 
 body.fullMeter{
@@ -1236,9 +1236,33 @@ body.fullMeter .fullDash{
 }
 
 
-/* v2.6 stable explicit controls */
-#maxBtn{font-size:20px}
-.fullDash{touch-action:manipulation}
+/* v2.7 safe max + fare sanitize */
+.fareBox{
+  position:relative;
+}
+.maxInCard{
+  position:absolute;
+  top:14px;
+  right:14px;
+  z-index:20;
+  width:48px;
+  height:48px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.075);
+  color:#f6fbff;
+  font-size:23px;
+  font-weight:1000;
+  display:grid;
+  place-items:center;
+  cursor:pointer;
+  box-shadow:0 12px 28px rgba(0,0,0,.22);
+  backdrop-filter:blur(10px);
+}
+.maxInCard:active{
+  transform:translateY(1px);
+  filter:brightness(.92);
+}
 .fullExitBtn{
   position:fixed;
   top:calc(10px + env(safe-area-inset-top));
@@ -1254,10 +1278,23 @@ body.fullMeter .fullDash{
   backdrop-filter:blur(10px);
   pointer-events:auto !important;
 }
-.fullActions,.fullActions .btn{
+.fullActions,
+.fullActions .btn{
   pointer-events:auto !important;
   z-index:4500 !important;
   position:relative;
+}
+.fullDash{
+  touch-action:manipulation;
+}
+@media (orientation:portrait){
+  .maxInCard{
+    width:44px;
+    height:44px;
+    border-radius:16px;
+    top:12px;
+    right:12px;
+  }
 }
 
 </style>
@@ -1269,14 +1306,13 @@ body.fullMeter .fullDash{
         <div class="brand">
           <div class="logo">Ü</div>
           <div>
-            <h1>ÜBERDO GO <span class="versionTag">v2.6</span></h1>
-            <div class="sub" id="subtitle">Sistema listo para viajar · v2.6</div>
+            <h1>ÜBERDO GO <span class="versionTag">v2.7</span></h1>
+            <div class="sub" id="subtitle">Sistema listo para viajar · v2.7</div>
           </div>
         </div>
         
         <div style="display:flex;align-items:center;gap:8px">
           <button class="refreshBtn" id="refreshBtn" title="Actualizar app">↻</button>
-          <button class="refreshBtn" id="maxBtn" title="Pantalla completa">⛶</button>
           <div class="status"><span class="dot" id="gpsDot"></span><span id="gpsStatus">GPS pendiente</span></div>
         </div>
       </header>
@@ -1284,6 +1320,7 @@ body.fullMeter .fullDash{
       <div class="meter">
         <div class="topMeterArea">
           <div class="fareBox">
+          <button class="maxInCard" id="maxBtn" type="button" title="Maximizar tablero">⛶</button>
             <div class="label">Total del viaje</div>
             <div class="fare" id="total">$0</div>
             <div class="state stateFree" id="rideState"><span class="stateIcon">○</span> Libre</div>
@@ -1369,13 +1406,13 @@ body.fullMeter .fullDash{
     </div>
 
     <button class="fullExitBtn" id="fullExitBtn" type="button">Salir</button>
-    <div class="fullTinyHint">MAX / Salir para cambiar vista</div>
+    <div class="fullTinyHint">Doble tap o Salir para volver</div>
   </section>
 
   <div class="fullHint">Doble tap para volver</div>
 
 <script>
-const VERSION = "2.6.0";
+const VERSION = "2.7.0";
 const CACHE_LABEL = "remisimetro-gps";
 
 /* ---- Vibración táctil ---- */
@@ -1473,9 +1510,6 @@ async function exitBrowserFullscreen(){
 async function toggleFullMeter(){
   document.body.classList.toggle("fullMeter");
   if(typeof updateFullDashboard === "function") updateFullDashboard();
-}else{
-    await exitBrowserFullscreen();
-  }
 }
 
 function handleFareTap(){
@@ -1489,8 +1523,40 @@ function handleFareTap(){
 }
 
 function loadFare(){
-  try { return {...defaultFare, ...JSON.parse(localStorage.getItem("fareConfig") || "{}")}; }
-  catch(e){ return {...defaultFare}; }
+  try {
+    const stored = JSON.parse(localStorage.getItem("fareConfig") || "{}");
+    const merged = {...defaultFare, ...stored};
+
+    const cleaned = {
+      baseFare: Number(merged.baseFare),
+      kmFare: Number(merged.kmFare),
+      minFare: Number(merged.minFare),
+      minTotal: Number(merged.minTotal)
+    };
+
+    const invalid =
+      !Number.isFinite(cleaned.baseFare) ||
+      !Number.isFinite(cleaned.kmFare) ||
+      !Number.isFinite(cleaned.minFare) ||
+      !Number.isFinite(cleaned.minTotal) ||
+      (cleaned.baseFare <= 0 && cleaned.kmFare <= 0 && cleaned.minFare <= 0 && cleaned.minTotal <= 0);
+
+    if(invalid){
+      localStorage.setItem("fareConfig", JSON.stringify(defaultFare));
+      return {...defaultFare};
+    }
+
+    if(cleaned.minTotal <= 0) cleaned.minTotal = defaultFare.minTotal;
+    if(cleaned.baseFare < 0) cleaned.baseFare = defaultFare.baseFare;
+    if(cleaned.kmFare < 0) cleaned.kmFare = defaultFare.kmFare;
+    if(cleaned.minFare < 0) cleaned.minFare = defaultFare.minFare;
+
+    return cleaned;
+  }
+  catch(e){
+    localStorage.setItem("fareConfig", JSON.stringify(defaultFare));
+    return {...defaultFare};
+  }
 }
 
 function saveFare(){
@@ -1675,10 +1741,12 @@ function exitFullDashboardStable(){
   if(typeof updateFullDashboard === "function") updateFullDashboard();
 }
 
-function bindStableMaxControls(){
+function bindStableFullControlsV27(){
   const maxBtn = document.getElementById("maxBtn");
-  if(maxBtn && !maxBtn.dataset.boundStable){
-    maxBtn.dataset.boundStable = "1";
+  const exitBtn = document.getElementById("fullExitBtn");
+
+  if(maxBtn && !maxBtn.dataset.boundV27){
+    maxBtn.dataset.boundV27 = "1";
     maxBtn.addEventListener("click", function(e){
       e.preventDefault();
       e.stopPropagation();
@@ -1686,37 +1754,47 @@ function bindStableMaxControls(){
     }, true);
   }
 
-  document.addEventListener("pointerup", function(e){
-    const target = e.target;
+  if(exitBtn && !exitBtn.dataset.boundV27){
+    exitBtn.dataset.boundV27 = "1";
+    exitBtn.addEventListener("click", function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      exitFullDashboardStable();
+    }, true);
+  }
 
-    if(target.closest && target.closest("#fullExitBtn")){
+  document.addEventListener("pointerup", function(e){
+    const t = e.target;
+    if(!t.closest) return;
+
+    if(t.closest("#fullExitBtn")){
       e.preventDefault();
       e.stopPropagation();
       exitFullDashboardStable();
       return;
     }
-    if(target.closest && target.closest("#fullStartBtn")){
+    if(t.closest("#fullStartBtn")){
       e.preventDefault();
       e.stopPropagation();
       startRide();
       if(typeof updateFullDashboard === "function") updateFullDashboard();
       return;
     }
-    if(target.closest && target.closest("#fullPauseBtn")){
+    if(t.closest("#fullPauseBtn")){
       e.preventDefault();
       e.stopPropagation();
       pauseRide();
       if(typeof updateFullDashboard === "function") updateFullDashboard();
       return;
     }
-    if(target.closest && target.closest("#fullFinishBtn")){
+    if(t.closest("#fullFinishBtn")){
       e.preventDefault();
       e.stopPropagation();
       finishRide();
       if(typeof updateFullDashboard === "function") updateFullDashboard();
       return;
     }
-    if(target.closest && target.closest("#fullResetBtn")){
+    if(t.closest("#fullResetBtn")){
       e.preventDefault();
       e.stopPropagation();
       resetRide(true);
@@ -1726,7 +1804,7 @@ function bindStableMaxControls(){
   }, true);
 }
 
-bindStableMaxControls();
+bindStableFullControlsV27();
 renderHistory();
   toast("Viaje guardado");
 }
@@ -1887,7 +1965,7 @@ async function hardRefreshApp(){
       const keys = await caches.keys();
       await Promise.all(keys.map(key => caches.delete(key)));
     }
-    const cleanUrl = location.origin + location.pathname + "?v=2.6&t=" + Date.now();
+    const cleanUrl = location.origin + location.pathname + "?v=2.7&t=" + Date.now();
     location.replace(cleanUrl);
   }catch(e){
     console.log(e);
@@ -1920,7 +1998,7 @@ if("serviceWorker" in navigator){
 // Mini diagnóstico visible en consola para instalación PWA.
 window.addEventListener("appinstalled", () => console.log("ÜBERDO GO instalado como PWA"));
 window.addEventListener("beforeinstallprompt", () => console.log("ÜBERDO GO listo para instalar"));
-console.log("ÜBERDO GO v2.6 cargado desde:", location.href);
+console.log("ÜBERDO GO v2.7 cargado desde:", location.href);
 
 </script>
 </body>
