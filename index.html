@@ -102,12 +102,19 @@
     .meter{
       flex:1;
       display:grid;
-      grid-template-rows:auto 1fr auto;
+      grid-template-rows:auto 1fr;
       padding:0 16px 16px;
       gap:12px;
       min-height:0;
     }
+    .topMeterArea{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      min-height:0;
+    }
     .fareBox{
+      flex:1;
       border-radius:28px;
       background:linear-gradient(180deg,rgba(4,12,22,.72),rgba(5,10,18,.92));
       border:1px solid rgba(255,255,255,.10);
@@ -225,8 +232,7 @@
       overflow:hidden;
     }
     body.fullMeter .right,
-    body.fullMeter header,
-    body.fullMeter .controls{
+    body.fullMeter header{
       display:none !important;
     }
     body.fullMeter .app{
@@ -280,6 +286,74 @@
     body.fullMeter .stat:nth-child(4){
       display:none;
     }
+
+    body.fullMeter .fareBox{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) min(260px,24vw);
+      grid-template-rows:auto auto auto;
+      column-gap:24px;
+      align-items:center;
+    }
+    body.fullMeter .fareBox .label{
+      grid-column:1;
+      grid-row:1;
+    }
+    body.fullMeter .fare{
+      grid-column:1;
+      grid-row:2;
+    }
+    body.fullMeter .state{
+      grid-column:1;
+      grid-row:3;
+    }
+    body.fullMeter .controls{
+      display:grid !important;
+      grid-column:2;
+      grid-row:1 / 4;
+      grid-template-columns:1fr;
+      align-self:stretch;
+      gap:12px;
+      z-index:3;
+    }
+    body.fullMeter .btn{
+      min-height:0;
+      padding:10px;
+      border-radius:22px;
+      font-size:clamp(15px,2vw,24px);
+    }
+    @media (orientation:portrait){
+      body.fullMeter .fareBox{
+        display:flex;
+        flex-direction:column;
+        align-items:stretch;
+        gap:12px;
+      }
+      body.fullMeter .controls{
+        grid-template-columns:repeat(2,1fr);
+      }
+    }
+
+
+    body.fullMeter .topMeterArea{
+      height:100%;
+      display:grid;
+      grid-template-columns:minmax(0,1fr) min(270px,24vw);
+      gap:14px;
+      min-height:0;
+    }
+    body.fullMeter .fareBox{
+      display:flex;
+      grid-column:1;
+      height:100%;
+    }
+    body.fullMeter .controls{
+      grid-column:2;
+      display:grid !important;
+      grid-template-columns:1fr;
+      gap:12px;
+      height:100%;
+    }
+
     .fullHint{
       position:fixed;
       left:50%;
@@ -380,8 +454,8 @@
         <div class="brand">
           <div class="logo">Ü</div>
           <div>
-            <h1>ÜBERDO GO <span class="versionTag">v1.8</span></h1>
-            <div class="sub" id="subtitle">Sistema listo para viajar · rotación libre v1.8</div>
+            <h1>ÜBERDO GO <span class="versionTag">v1.9</span></h1>
+            <div class="sub" id="subtitle">Sistema listo para viajar · rotación libre v1.9</div>
           </div>
         </div>
         
@@ -392,10 +466,19 @@
       </header>
 
       <div class="meter">
-        <div class="fareBox">
-          <div class="label">Total estimado</div>
-          <div class="fare" id="total">$0</div>
-          <div class="state" id="rideState">● Libre</div>
+        <div class="topMeterArea">
+          <div class="fareBox">
+            <div class="label">Total estimado</div>
+            <div class="fare" id="total">$0</div>
+            <div class="state" id="rideState">● Libre</div>
+          </div>
+
+          <div class="controls">
+            <button class="btn start" id="startBtn">Iniciar</button>
+            <button class="btn pause" id="pauseBtn">Pausar</button>
+            <button class="btn finish" id="finishBtn">Finalizar</button>
+            <button class="btn danger" id="resetBtn">Reset</button>
+          </div>
         </div>
 
         <div class="gridStats">
@@ -405,12 +488,6 @@
           <div class="stat"><div class="label">Precisión</div><b id="accuracy">—</b></div>
         </div>
 
-        <div class="controls">
-          <button class="btn start" id="startBtn">Iniciar</button>
-          <button class="btn pause" id="pauseBtn">Pausar</button>
-          <button class="btn finish" id="finishBtn">Finalizar</button>
-          <button class="btn danger" id="resetBtn">Reset</button>
-        </div>
       </div>
     </section>
 
@@ -454,7 +531,7 @@
   <div class="fullHint">Doble tap para volver</div>
 
 <script>
-const VERSION = "1.8.0";
+const VERSION = "1.9.0";
 const CACHE_LABEL = "remisimetro-gps";
 
 let watchId = null;
@@ -807,7 +884,7 @@ async function hardRefreshApp(){
       const keys = await caches.keys();
       await Promise.all(keys.map(key => caches.delete(key)));
     }
-    const cleanUrl = location.origin + location.pathname + "?v=1.8&t=" + Date.now();
+    const cleanUrl = location.origin + location.pathname + "?v=1.9&t=" + Date.now();
     location.replace(cleanUrl);
   }catch(e){
     console.log(e);
@@ -838,7 +915,7 @@ if("serviceWorker" in navigator){
 // Mini diagnóstico visible en consola para instalación PWA.
 window.addEventListener("appinstalled", () => console.log("ÜBERDO GO instalado como PWA"));
 window.addEventListener("beforeinstallprompt", () => console.log("ÜBERDO GO listo para instalar"));
-console.log("ÜBERDO GO v1.8.0 cargado desde:", location.href);
+console.log("ÜBERDO GO v1.9.0 cargado desde:", location.href);
 
 </script>
 </body>
