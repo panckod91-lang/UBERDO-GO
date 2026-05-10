@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Remisímetro GPS</title>
+  <title>ÜBERDO GO</title>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#07111f" />
   <meta name="mobile-web-app-capable" content="yes" />
@@ -231,10 +231,10 @@
     <section class="left">
       <header>
         <div class="brand">
-          <div class="logo">R</div>
+          <div class="logo">Ü</div>
           <div>
-            <h1>Remisímetro GPS</h1>
-            <div class="sub" id="subtitle">Listo para iniciar viaje</div>
+            <h1>ÜBERDO GO</h1>
+            <div class="sub" id="subtitle">Sistema listo para viajar</div>
           </div>
         </div>
         <div class="status"><span class="dot" id="gpsDot"></span><span id="gpsStatus">GPS pendiente</span></div>
@@ -302,7 +302,7 @@
   </main>
 
 <script>
-const VERSION = "1.0.0";
+const VERSION = "1.1.0";
 const CACHE_LABEL = "remisimetro-gps";
 
 let watchId = null;
@@ -379,7 +379,7 @@ function updateUI(){
 
   if(!isRunning){
     $("rideState").textContent = "● Libre";
-    $("subtitle").textContent = "Listo para iniciar viaje";
+    $("subtitle").textContent = "Sistema listo para viajar";
   } else if(isPaused){
     $("rideState").textContent = "● Pausado";
     $("subtitle").textContent = "Viaje pausado";
@@ -619,6 +619,12 @@ if("serviceWorker" in navigator){
     navigator.serviceWorker.register("./service-worker.js").catch(console.warn);
   });
 }
+
+// Mini diagnóstico visible en consola para instalación PWA.
+window.addEventListener("appinstalled", () => console.log("ÜBERDO GO instalado como PWA"));
+window.addEventListener("beforeinstallprompt", () => console.log("ÜBERDO GO listo para instalar"));
+console.log("ÜBERDO GO v1.1.0 cargado desde:", location.href);
+
 </script>
 </body>
 </html>

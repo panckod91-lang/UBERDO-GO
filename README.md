@@ -1,28 +1,31 @@
-# Remisímetro GPS PWA
+# ÜBERDO GO
 
-PWA para probar un remisímetro/taxímetro con GPS.
+PWA apaisada para medir viajes con GPS.
 
-## Archivos
+## Subida a GitHub Pages
 
-- `index.html`
-- `manifest.json`
-- `service-worker.js`
-- `icon-192.png`
-- `icon-512.png`
+Subir estos archivos a la raíz del repo:
 
-## Subir a GitHub Pages
+- index.html
+- manifest.json
+- service-worker.js
+- icon-192.png
+- icon-512.png
 
-1. Crear un repositorio nuevo.
-2. Subir estos archivos en la raíz del repo.
-3. Ir a Settings → Pages.
-4. Source: Deploy from branch.
-5. Branch: main / root.
-6. Abrir la URL publicada desde Chrome Android.
-7. Menú ⋮ → Agregar a pantalla principal.
+Luego:
+1. Settings → Pages.
+2. Deploy from branch.
+3. Branch: main / root.
+4. Abrir la URL publicada en Chrome Android.
+5. Menú ⋮ → Agregar a pantalla principal / Instalar.
 
-## Notas
+## Si instala pero no abre
 
-- El cálculo es estimativo, no homologado.
-- La navegación se abre en Google Maps o Waze.
-- El historial y tarifas se guardan en localStorage.
-- Si no ves cambios después de actualizar, cambiar el nombre de cache en `service-worker.js`.
+1. Borrar el ícono instalado anterior.
+2. En Chrome: Configuración → Configuración de sitios → Todos los sitios.
+3. Buscar el dominio de GitHub Pages.
+4. Borrar datos.
+5. Volver a abrir la URL.
+6. Instalar otra vez.
+
+Esta versión usa cache: uberdo-go-v2.
