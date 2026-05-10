@@ -3,14 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>ÜBERDO GO</title>
+  <title>ÜBERDO GO — Medidor de viajes GPS</title>
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#05080f" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="fullscreen" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-title" content="Remisímetro" />
+  <meta name="apple-mobile-web-app-title" content="ÜBERDO GO" />
+  <!-- Open Graph / WhatsApp preview -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:title"       content="ÜBERDO GO — Medidor de viajes" />
+  <meta property="og:description" content="Calculá tu tarifa de taxi en tiempo real con GPS. Bajada, $/km y tiempo configurables." />
+  <meta property="og:image"       id="ogImage" content="./icon-512.png" />
+  <meta property="og:url"         id="ogUrl"   content="" />
+  <meta name="twitter:card"       content="summary" />
   <style>
     :root{
       --bg:#07111f;
@@ -1297,6 +1304,26 @@ body.fullMeter .fullDash{
   }
 }
 
+/* ---- City pills ---- */
+.cityPill {
+  padding: 5px 13px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.05);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .15s, color .15s, border-color .15s;
+  white-space: nowrap;
+}
+.cityPill:hover { background: rgba(255,255,255,.1); color: var(--text); }
+.cityPillActive {
+  background: rgba(40,227,156,.15) !important;
+  border-color: rgba(40,227,156,.4) !important;
+  color: #28e39c !important;
+}
+
 </style>
 </head>
 <body>
@@ -1351,7 +1378,9 @@ body.fullMeter .fullDash{
       </div>
       <div class="panel">
         <label>Dirección destino</label>
-        <input id="destination" placeholder="Ej: San Martín 500, Rosario" autocomplete="street-address" />
+        <input id="destination" placeholder="Ej: San Martín 500" autocomplete="street-address" />
+        <!-- Selector de ciudad -->
+        <div id="cityPills" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px"></div>
         <div class="destRow">
           <button class="miniBtn" id="mapsBtn">Abrir Google Maps</button>
           <button class="miniBtn" id="wazeBtn">Waze</button>
@@ -1610,12 +1639,12 @@ function updateFullDashboard(){
   st.classList.remove("running","paused");
 
   if(!isRunning){
-    st.textContent = "○ Libre";
+    st.innerHTML = `<span class="stateIcon">○</span> Libre`;
   }else if(isPaused){
-    st.textContent = "⏸ Pausado";
+    st.innerHTML = `<span class="stateIcon stateIconBlink">⏸</span> Pausado`;
     st.classList.add("paused");
   }else{
-    st.textContent = "▶ En viaje";
+    st.innerHTML = `<span class="stateIcon stateIconPulse">●</span> En viaje`;
     st.classList.add("running");
   }
 }
@@ -1880,12 +1909,40 @@ function haversine(lat1, lon1, lat2, lon2){
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 }
 
+/* ---- Ciudades frecuentes ---- */
+const CITIES = [
+  { label:"Cañada de Gómez", suffix:"Cañada de Gómez, Santa Fe, Argentina" },
+  { label:"Rosario",         suffix:"Rosario, Santa Fe, Argentina" },
+  { label:"Santa Fe",        suffix:"Santa Fe, Santa Fe, Argentina" },
+  { label:"Córdoba",         suffix:"Córdoba, Argentina" },
+];
+const CITY_KEY = "uberdo_city";
+
+function buildCityPills(){
+  const saved = localStorage.getItem(CITY_KEY) || CITIES[0].suffix;
+  const container = document.getElementById("cityPills");
+  container.innerHTML = "";
+  CITIES.forEach(c => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.textContent = c.label;
+    btn.className = "cityPill" + (c.suffix === saved ? " cityPillActive" : "");
+    btn.onclick = () => {
+      localStorage.setItem(CITY_KEY, c.suffix);
+      buildCityPills();
+    };
+    container.appendChild(btn);
+  });
+}
+
+function getSelectedCity(){
+  return localStorage.getItem(CITY_KEY) || CITIES[0].suffix;
+}
+
 function mapsUrl(kind){
-  const dest = $("destination").value.trim();
-  if(!dest){
-    alert("Cargá una dirección destino primero.");
-    return;
-  }
+  const street = $("destination").value.trim();
+  const city   = getSelectedCity();
+  const dest   = street ? street + ", " + city : city;
   if(kind === "waze"){
     window.open("https://waze.com/ul?q=" + encodeURIComponent(dest) + "&navigate=yes", "_blank");
   } else {
@@ -1985,6 +2042,13 @@ renderHistory();
 updateUI();
 tryRestoreSession();
 bindStableFullControlsV27();
+buildCityPills();
+// OG tags con URL absoluta para WhatsApp
+(function(){
+  const base = location.origin + location.pathname.replace(/index\.html.*$/, "");
+  document.getElementById("ogImage").content = base + "icon-512.png";
+  document.getElementById("ogUrl").content   = base;
+})();
 
 if("serviceWorker" in navigator){
   window.addEventListener("load", () => {
