@@ -445,7 +445,135 @@
       .history{gap:6px}
       .trip{padding:8px}
     }
-  </style>
+  
+/* v2.0 full meter layout fix */
+body.fullMeter .app{
+  width:100vw;
+  height:100svh;
+  padding:0;
+  overflow:hidden;
+}
+body.fullMeter .left{
+  width:100vw;
+  height:100svh;
+  overflow:hidden;
+}
+body.fullMeter .meter{
+  height:100svh;
+  padding:16px;
+  display:grid;
+  grid-template-rows:minmax(0,1fr) auto;
+  gap:14px;
+}
+body.fullMeter .topMeterArea{
+  min-height:0;
+  height:100%;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) clamp(190px,24vw,330px);
+  gap:18px;
+  align-items:stretch;
+}
+body.fullMeter .fareBox{
+  min-width:0;
+  min-height:0;
+  height:100%;
+  display:flex !important;
+  flex-direction:column;
+  justify-content:center;
+  align-items:flex-start;
+  padding:clamp(18px,3vw,34px);
+  overflow:hidden;
+}
+body.fullMeter .fareBox .label{
+  font-size:clamp(12px,1.8vw,22px);
+}
+body.fullMeter .fare{
+  font-size:clamp(72px,13vw,170px);
+  line-height:.86;
+  letter-spacing:-.065em;
+  max-width:100%;
+  white-space:nowrap;
+}
+body.fullMeter .state{
+  font-size:clamp(18px,2.7vw,34px);
+  margin-top:clamp(8px,1.5vw,18px);
+}
+body.fullMeter .controls{
+  min-width:0;
+  min-height:0;
+  display:grid !important;
+  grid-template-columns:1fr;
+  grid-template-rows:repeat(4,1fr);
+  gap:12px;
+  height:100%;
+}
+body.fullMeter .btn{
+  min-height:0;
+  height:auto;
+  padding:8px;
+  border-radius:22px;
+  font-size:clamp(16px,2.1vw,28px);
+}
+body.fullMeter .gridStats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+}
+body.fullMeter .stat{
+  padding:clamp(12px,2vw,22px);
+  border-radius:24px;
+}
+body.fullMeter .stat b{
+  font-size:clamp(36px,6.3vw,82px);
+}
+body.fullMeter .stat:nth-child(4){
+  display:none !important;
+}
+
+@media (orientation:portrait){
+  body.fullMeter .meter{
+    padding:12px;
+    grid-template-rows:auto auto;
+    overflow:hidden;
+  }
+  body.fullMeter .topMeterArea{
+    display:flex;
+    flex-direction:column;
+    height:auto;
+    gap:12px;
+  }
+  body.fullMeter .fareBox{
+    height:auto;
+    min-height:300px;
+    padding:22px;
+  }
+  body.fullMeter .fare{
+    font-size:clamp(76px,23vw,150px);
+    line-height:.9;
+  }
+  body.fullMeter .controls{
+    height:auto;
+    grid-template-columns:repeat(2,1fr);
+    grid-template-rows:repeat(2,82px);
+    gap:10px;
+  }
+  body.fullMeter .btn{
+    font-size:20px;
+    border-radius:22px;
+  }
+  body.fullMeter .gridStats{
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+  body.fullMeter .stat{
+    padding:14px 18px;
+  }
+  body.fullMeter .stat b{
+    font-size:clamp(36px,11vw,74px);
+  }
+}
+
+</style>
 </head>
 <body>
   <main class="app">
@@ -454,8 +582,8 @@
         <div class="brand">
           <div class="logo">Ü</div>
           <div>
-            <h1>ÜBERDO GO <span class="versionTag">v1.9</span></h1>
-            <div class="sub" id="subtitle">Sistema listo para viajar · rotación libre v1.9</div>
+            <h1>ÜBERDO GO <span class="versionTag">v2.0</span></h1>
+            <div class="sub" id="subtitle">Sistema listo para viajar · rotación libre v2.0</div>
           </div>
         </div>
         
@@ -531,7 +659,7 @@
   <div class="fullHint">Doble tap para volver</div>
 
 <script>
-const VERSION = "1.9.0";
+const VERSION = "2.0.0";
 const CACHE_LABEL = "remisimetro-gps";
 
 let watchId = null;
@@ -884,7 +1012,7 @@ async function hardRefreshApp(){
       const keys = await caches.keys();
       await Promise.all(keys.map(key => caches.delete(key)));
     }
-    const cleanUrl = location.origin + location.pathname + "?v=1.9&t=" + Date.now();
+    const cleanUrl = location.origin + location.pathname + "?v=2.0&t=" + Date.now();
     location.replace(cleanUrl);
   }catch(e){
     console.log(e);
@@ -915,7 +1043,7 @@ if("serviceWorker" in navigator){
 // Mini diagnóstico visible en consola para instalación PWA.
 window.addEventListener("appinstalled", () => console.log("ÜBERDO GO instalado como PWA"));
 window.addEventListener("beforeinstallprompt", () => console.log("ÜBERDO GO listo para instalar"));
-console.log("ÜBERDO GO v1.9.0 cargado desde:", location.href);
+console.log("ÜBERDO GO v2.0.0 cargado desde:", location.href);
 
 </script>
 </body>

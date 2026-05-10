@@ -1,4 +1,4 @@
-const CACHE_NAME = "uberdo-go-v19-full-controls";
+const CACHE_NAME = "uberdo-go-v20-full-layout-fix";
 const ASSETS = [
   "./",
   "./index.html",
