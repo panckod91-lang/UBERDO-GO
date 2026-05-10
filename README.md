@@ -1,14 +1,17 @@
-# ÜBERDO GO v1.2b SAFE
+# ÜBERDO GO v1.3 NATURAL
 
-Base: v1.1 que abría correctamente.
-Cambio mínimo:
-- Ya no bloquea vertical.
-- Funciona portrait y landscape.
-- Manifest con orientation any.
-- Cache nueva: uberdo-go-v12b-safe.
+Cambios:
+- Versión visible junto al título: v1.3.
+- Sin bloqueo vertical.
+- Layout responsive portrait/landscape.
+- Manifest orientation: natural.
+- start_url con query: ./index.html?v=1.3
+- Cache nueva: uberdo-go-v13-natural.
 
-Si la app instalada no abre:
-1. Borrar la app instalada anterior.
-2. Chrome → configuración del sitio → tu GitHub Pages → borrar datos.
-3. Abrir la URL desde Chrome.
-4. Instalar otra vez.
+Importante:
+Para probar bien:
+1. Borrar app instalada anterior.
+2. En Chrome borrar datos del sitio GitHub Pages.
+3. Reemplazar archivos en GitHub.
+4. Abrir la URL con ?v=1.3 si hace falta.
+5. Instalar nuevamente.
