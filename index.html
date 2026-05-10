@@ -1706,7 +1706,7 @@ function finishRide(){
   clearInterval(timer);
   if(watchId !== null) navigator.geolocation.clearWatch(watchId);
   vibe([100, 50, 100, 50, 250]);
-  saveSession(); // limpia la sesión (isRunning queda false tras resetRide)
+  saveSession();
 
   const trip = {
     date: new Date().toISOString(),
@@ -1717,19 +1717,11 @@ function finishRide(){
   };
   saveTrip(trip);
   resetRide(false);
-  
-const fullStartBtn = document.getElementById("fullStartBtn");
-if(fullStartBtn){
-  fullStartBtn.onclick = startRide;
-  document.getElementById("fullPauseBtn").onclick = pauseRide;
-  document.getElementById("fullFinishBtn").onclick = finishRide;
-  document.getElementById("fullResetBtn").onclick = () => resetRide(true);
-  document.getElementById("fullDash").addEventListener("click", (e) => {
-    if(e.target.closest("button")) return;
-    handleFareTap();
-  });
+  renderHistory();
+  toast("Viaje guardado");
 }
 
+/* ---- fullDash controls: funciones globales, binding único al init ---- */
 
 function enterFullDashboardStable(){
   document.body.classList.add("fullMeter");
@@ -1742,14 +1734,15 @@ function exitFullDashboardStable(){
 }
 
 function bindStableFullControlsV27(){
-  const maxBtn = document.getElementById("maxBtn");
-  const exitBtn = document.getElementById("fullExitBtn");
+  const maxBtn       = document.getElementById("maxBtn");
+  const exitBtn      = document.getElementById("fullExitBtn");
+  const fullDash     = document.getElementById("fullDash");
+  const fullStartBtn = document.getElementById("fullStartBtn");
 
   if(maxBtn && !maxBtn.dataset.boundV27){
     maxBtn.dataset.boundV27 = "1";
     maxBtn.addEventListener("click", function(e){
-      e.preventDefault();
-      e.stopPropagation();
+      e.preventDefault(); e.stopPropagation();
       enterFullDashboardStable();
     }, true);
   }
@@ -1757,56 +1750,59 @@ function bindStableFullControlsV27(){
   if(exitBtn && !exitBtn.dataset.boundV27){
     exitBtn.dataset.boundV27 = "1";
     exitBtn.addEventListener("click", function(e){
-      e.preventDefault();
-      e.stopPropagation();
+      e.preventDefault(); e.stopPropagation();
       exitFullDashboardStable();
     }, true);
   }
 
-  document.addEventListener("pointerup", function(e){
-    const t = e.target;
-    if(!t.closest) return;
+  if(fullStartBtn && !fullStartBtn.dataset.boundV27){
+    fullStartBtn.dataset.boundV27 = "1";
+    fullStartBtn.onclick = startRide;
+    document.getElementById("fullPauseBtn").onclick  = pauseRide;
+    document.getElementById("fullFinishBtn").onclick = finishRide;
+    document.getElementById("fullResetBtn").onclick  = () => resetRide(true);
+  }
 
-    if(t.closest("#fullExitBtn")){
-      e.preventDefault();
-      e.stopPropagation();
-      exitFullDashboardStable();
-      return;
-    }
-    if(t.closest("#fullStartBtn")){
-      e.preventDefault();
-      e.stopPropagation();
-      startRide();
-      if(typeof updateFullDashboard === "function") updateFullDashboard();
-      return;
-    }
-    if(t.closest("#fullPauseBtn")){
-      e.preventDefault();
-      e.stopPropagation();
-      pauseRide();
-      if(typeof updateFullDashboard === "function") updateFullDashboard();
-      return;
-    }
-    if(t.closest("#fullFinishBtn")){
-      e.preventDefault();
-      e.stopPropagation();
-      finishRide();
-      if(typeof updateFullDashboard === "function") updateFullDashboard();
-      return;
-    }
-    if(t.closest("#fullResetBtn")){
-      e.preventDefault();
-      e.stopPropagation();
-      resetRide(true);
-      if(typeof updateFullDashboard === "function") updateFullDashboard();
-      return;
-    }
-  }, true);
-}
+  if(fullDash && !fullDash.dataset.boundV27){
+    fullDash.dataset.boundV27 = "1";
+    fullDash.addEventListener("click", (e) => {
+      if(e.target.closest("button")) return;
+      handleFareTap();
+    });
+  }
 
-bindStableFullControlsV27();
-renderHistory();
-  toast("Viaje guardado");
+  // Listener global: protegido contra doble-bind en llamadas repetidas
+  if(!document.dataset.fullPointerBound){
+    document.dataset.fullPointerBound = "1";
+    document.addEventListener("pointerup", function(e){
+      const t = e.target;
+      if(!t.closest) return;
+      if(t.closest("#fullExitBtn")){
+        e.preventDefault(); e.stopPropagation();
+        exitFullDashboardStable(); return;
+      }
+      if(t.closest("#fullStartBtn")){
+        e.preventDefault(); e.stopPropagation();
+        startRide();
+        if(typeof updateFullDashboard === "function") updateFullDashboard(); return;
+      }
+      if(t.closest("#fullPauseBtn")){
+        e.preventDefault(); e.stopPropagation();
+        pauseRide();
+        if(typeof updateFullDashboard === "function") updateFullDashboard(); return;
+      }
+      if(t.closest("#fullFinishBtn")){
+        e.preventDefault(); e.stopPropagation();
+        finishRide();
+        if(typeof updateFullDashboard === "function") updateFullDashboard(); return;
+      }
+      if(t.closest("#fullResetBtn")){
+        e.preventDefault(); e.stopPropagation();
+        resetRide(true);
+        if(typeof updateFullDashboard === "function") updateFullDashboard(); return;
+      }
+    }, true);
+  }
 }
 
 function resetRide(confirmAsk = true){
@@ -1988,6 +1984,7 @@ paintFare();
 renderHistory();
 updateUI();
 tryRestoreSession();
+bindStableFullControlsV27();
 
 if("serviceWorker" in navigator){
   window.addEventListener("load", () => {
