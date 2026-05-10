@@ -1,12 +1,12 @@
-# ÜBERDO GO v2.5
+# ÜBERDO GO v2.5b SAFE
 
-Prioridad: estabilidad en uso real.
+Base: v2.4 que funcionaba.
 
-Cambios:
-- El doble tap ya no depende de la API fullscreen del navegador.
-- El dashboard full es visual, más estable al tacto.
-- Botón “Salir” visible para volver del modo full.
-- Botones full con z-index y stopPropagation.
-- Finalizar desde full usa handler seguro.
-- Manifest vuelve a display: standalone.
-- Cache: uberdo-go-v25-stable-full-controls.
+Cambios mínimos:
+- Botón Salir en dashboard full.
+- Rebinding seguro de botones full.
+- No toca tarifas, historial, init, manifest display ni lógica principal.
+- Cache: uberdo-go-v25b-safe.
+
+Sobre service worker:
+El nombre del archivo no importa. Puede llamarse service-worker.js o sw.js, siempre que el index registre ese mismo nombre.
