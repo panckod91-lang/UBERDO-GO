@@ -1,12 +1,14 @@
-# ÜBERDO GO v1.5
+# ÜBERDO GO v1.6
 
 Cambios:
-- Botón de actualizar dentro de la app: ↻
-- El botón desregistra service worker, borra caches y recarga con query nueva.
-- Versión visible: v1.5
-- Cache: uberdo-go-v15-refresh
+- Versión visible correcta: v1.6.
+- Botón actualizar sin confirmación molesta.
+- Manifest orientation: any.
+- Layout vertical y horizontal.
+- Panel derecho con scroll en horizontal.
+- Cache: uberdo-go-v16-rotate-clean.
 
-Uso:
-- Subir archivos a GitHub.
-- Abrir con ?v=1.5.
-- Desde la app instalada, tocar ↻ cuando quieras forzar actualización.
+Para probar:
+1. Reemplazar archivos en GitHub.
+2. Abrir URL con ?v=1.6 desde Chrome.
+3. Desinstalar app anterior e instalar de nuevo si el ícono sigue viejo.
