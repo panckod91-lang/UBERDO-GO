@@ -77,6 +77,23 @@
       padding:8px 10px;border-radius:999px;background:rgba(255,255,255,.06);
       border:1px solid var(--border);font-size:12px;color:var(--muted);white-space:nowrap;
     }
+
+    .refreshBtn{
+      width:42px;
+      height:42px;
+      border-radius:16px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.07);
+      color:var(--text);
+      font-size:22px;
+      font-weight:1000;
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      box-shadow:0 10px 25px rgba(0,0,0,.18);
+    }
+    .refreshBtn:active{transform:translateY(1px);filter:brightness(.9)}
+
     .dot{width:9px;height:9px;border-radius:50%;background:var(--yellow);box-shadow:0 0 14px var(--yellow)}
     .dot.ok{background:var(--green);box-shadow:0 0 14px var(--green)}
     .dot.bad{background:var(--red);box-shadow:0 0 14px var(--red)}
@@ -276,7 +293,11 @@
             <div class="sub" id="subtitle">Sistema listo para viajar</div>
           </div>
         </div>
-        <div class="status"><span class="dot" id="gpsDot"></span><span id="gpsStatus">GPS pendiente</span></div>
+        
+        <div style="display:flex;align-items:center;gap:8px">
+          <button class="refreshBtn" id="refreshBtn" title="Actualizar app">↻</button>
+          <div class="status"><span class="dot" id="gpsDot"></span><span id="gpsStatus">GPS pendiente</span></div>
+        </div>
       </header>
 
       <div class="meter">
@@ -640,6 +661,27 @@ function toast(msg){
   setTimeout(()=>el.remove(),1600);
 }
 
+
+async function hardRefreshApp(){
+  try{
+    if(confirm("¿Actualizar ÜBERDO GO y limpiar caché?")){
+      if("serviceWorker" in navigator){
+        const regs = await navigator.serviceWorker.getRegistrations();
+        await Promise.all(regs.map(reg => reg.unregister()));
+      }
+      if("caches" in window){
+        const keys = await caches.keys();
+        await Promise.all(keys.map(key => caches.delete(key)));
+      }
+      const cleanUrl = location.origin + location.pathname + "?v=1.5&t=" + Date.now();
+      location.replace(cleanUrl);
+    }
+  }catch(e){
+    console.log(e);
+    location.reload();
+  }
+}
+
 $("startBtn").onclick = startRide;
 $("pauseBtn").onclick = pauseRide;
 $("finishBtn").onclick = finishRide;
@@ -648,6 +690,7 @@ $("mapsBtn").onclick = () => mapsUrl("google");
 $("wazeBtn").onclick = () => mapsUrl("waze");
 $("saveFareBtn").onclick = saveFare;
 $("clearHistoryBtn").onclick = clearHistory;
+$("refreshBtn").onclick = hardRefreshApp;
 
 paintFare();
 renderHistory();
