@@ -446,7 +446,7 @@
       .trip{padding:8px}
     }
   
-/* v2.5b full meter layout fix */
+/* v2.6 full meter layout fix */
 body.fullMeter .app{
   width:100vw;
   height:100svh;
@@ -574,7 +574,7 @@ body.fullMeter .stat:nth-child(4){
 }
 
 
-/* v2.5b tablero polish REAL */
+/* v2.6 tablero polish REAL */
 .versionTag{font-size:12px;color:var(--muted);font-weight:900;margin-left:4px;vertical-align:middle}
 
 .stateFree{color:#a9b8cc !important}
@@ -655,7 +655,7 @@ body.fullMeter .controls{
 }
 
 
-/* v2.5b polish real */
+/* v2.6 polish real */
 .state{
   display:inline-flex;
   align-items:center;
@@ -782,7 +782,7 @@ body.fullMeter .controls{
   }
 }
 
-/* ===== v2.5b UI POLISH ===== */
+/* ===== v2.6 UI POLISH ===== */
 
 /* --- State badge animations --- */
 @keyframes stateIconPulse {
@@ -959,7 +959,7 @@ body.fullMeter .state {
 }
 
 
-/* v2.5b TRUE FULL DASHBOARD */
+/* v2.6 TRUE FULL DASHBOARD */
 .fullDash{display:none}
 
 body.fullMeter{
@@ -1236,30 +1236,28 @@ body.fullMeter .fullDash{
 }
 
 
-/* v2.5b safe patch: botón salir y eventos confiables */
+/* v2.6 stable explicit controls */
+#maxBtn{font-size:20px}
+.fullDash{touch-action:manipulation}
 .fullExitBtn{
   position:fixed;
   top:calc(10px + env(safe-area-inset-top));
   right:calc(10px + env(safe-area-inset-right));
-  z-index:999;
-  border:1px solid rgba(255,255,255,.14);
+  z-index:5000 !important;
+  border:1px solid rgba(255,255,255,.18);
   border-radius:999px;
-  background:rgba(0,0,0,.55);
+  background:rgba(0,0,0,.68);
   color:white;
-  padding:9px 13px;
-  font-weight:950;
-  font-size:13px;
+  padding:11px 15px;
+  font-weight:1000;
+  font-size:14px;
   backdrop-filter:blur(10px);
-  pointer-events:auto;
-}
-.fullActions,
-.fullActions .btn{
   pointer-events:auto !important;
-  position:relative;
-  z-index:200;
 }
-.fullDash{
-  touch-action:manipulation;
+.fullActions,.fullActions .btn{
+  pointer-events:auto !important;
+  z-index:4500 !important;
+  position:relative;
 }
 
 </style>
@@ -1271,13 +1269,14 @@ body.fullMeter .fullDash{
         <div class="brand">
           <div class="logo">Ü</div>
           <div>
-            <h1>ÜBERDO GO <span class="versionTag">v2.5b</span></h1>
-            <div class="sub" id="subtitle">Sistema listo para viajar · v2.5b</div>
+            <h1>ÜBERDO GO <span class="versionTag">v2.6</span></h1>
+            <div class="sub" id="subtitle">Sistema listo para viajar · v2.6</div>
           </div>
         </div>
         
         <div style="display:flex;align-items:center;gap:8px">
           <button class="refreshBtn" id="refreshBtn" title="Actualizar app">↻</button>
+          <button class="refreshBtn" id="maxBtn" title="Pantalla completa">⛶</button>
           <div class="status"><span class="dot" id="gpsDot"></span><span id="gpsStatus">GPS pendiente</span></div>
         </div>
       </header>
@@ -1370,13 +1369,13 @@ body.fullMeter .fullDash{
     </div>
 
     <button class="fullExitBtn" id="fullExitBtn" type="button">Salir</button>
-    <div class="fullTinyHint">Doble tap o Salir para volver</div>
+    <div class="fullTinyHint">MAX / Salir para cambiar vista</div>
   </section>
 
   <div class="fullHint">Doble tap para volver</div>
 
 <script>
-const VERSION = "2.5b";
+const VERSION = "2.6.0";
 const CACHE_LABEL = "remisimetro-gps";
 
 /* ---- Vibración táctil ---- */
@@ -1473,9 +1472,8 @@ async function exitBrowserFullscreen(){
 
 async function toggleFullMeter(){
   document.body.classList.toggle("fullMeter");
-  if(document.body.classList.contains("fullMeter")){
-    await tryBrowserFullscreen();
-  }else{
+  if(typeof updateFullDashboard === "function") updateFullDashboard();
+}else{
     await exitBrowserFullscreen();
   }
 }
@@ -1667,69 +1665,68 @@ if(fullStartBtn){
 }
 
 
-function bindFullDashboardSafePatch(){
-  const exit = document.getElementById("fullExitBtn");
-  const dash = document.getElementById("fullDash");
-  const start = document.getElementById("fullStartBtn");
-  const pause = document.getElementById("fullPauseBtn");
-  const finish = document.getElementById("fullFinishBtn");
-  const reset = document.getElementById("fullResetBtn");
+function enterFullDashboardStable(){
+  document.body.classList.add("fullMeter");
+  if(typeof updateFullDashboard === "function") updateFullDashboard();
+}
 
-  if(exit){
-    exit.onclick = function(e){
+function exitFullDashboardStable(){
+  document.body.classList.remove("fullMeter");
+  if(typeof updateFullDashboard === "function") updateFullDashboard();
+}
+
+function bindStableMaxControls(){
+  const maxBtn = document.getElementById("maxBtn");
+  if(maxBtn && !maxBtn.dataset.boundStable){
+    maxBtn.dataset.boundStable = "1";
+    maxBtn.addEventListener("click", function(e){
       e.preventDefault();
       e.stopPropagation();
-      document.body.classList.remove("fullMeter");
-      if(typeof updateFullDashboard === "function") updateFullDashboard();
-    };
+      enterFullDashboardStable();
+    }, true);
   }
 
-  if(start){
-    start.onclick = function(e){
+  document.addEventListener("pointerup", function(e){
+    const target = e.target;
+
+    if(target.closest && target.closest("#fullExitBtn")){
+      e.preventDefault();
+      e.stopPropagation();
+      exitFullDashboardStable();
+      return;
+    }
+    if(target.closest && target.closest("#fullStartBtn")){
       e.preventDefault();
       e.stopPropagation();
       startRide();
       if(typeof updateFullDashboard === "function") updateFullDashboard();
-    };
-  }
-
-  if(pause){
-    pause.onclick = function(e){
+      return;
+    }
+    if(target.closest && target.closest("#fullPauseBtn")){
       e.preventDefault();
       e.stopPropagation();
       pauseRide();
       if(typeof updateFullDashboard === "function") updateFullDashboard();
-    };
-  }
-
-  if(finish){
-    finish.onclick = function(e){
+      return;
+    }
+    if(target.closest && target.closest("#fullFinishBtn")){
       e.preventDefault();
       e.stopPropagation();
       finishRide();
       if(typeof updateFullDashboard === "function") updateFullDashboard();
-    };
-  }
-
-  if(reset){
-    reset.onclick = function(e){
+      return;
+    }
+    if(target.closest && target.closest("#fullResetBtn")){
       e.preventDefault();
       e.stopPropagation();
       resetRide(true);
       if(typeof updateFullDashboard === "function") updateFullDashboard();
-    };
-  }
-
-  if(dash && !dash.dataset.safePatchBound){
-    dash.dataset.safePatchBound = "1";
-    dash.addEventListener("click", function(e){
-      if(e.target.closest("button")) return;
-      handleFareTap();
-    });
-  }
+      return;
+    }
+  }, true);
 }
 
-bindFullDashboardSafePatch();
+bindStableMaxControls();
 renderHistory();
   toast("Viaje guardado");
 }
@@ -1890,7 +1887,7 @@ async function hardRefreshApp(){
       const keys = await caches.keys();
       await Promise.all(keys.map(key => caches.delete(key)));
     }
-    const cleanUrl = location.origin + location.pathname + "?v=2.5b&t=" + Date.now();
+    const cleanUrl = location.origin + location.pathname + "?v=2.6&t=" + Date.now();
     location.replace(cleanUrl);
   }catch(e){
     console.log(e);
@@ -1923,7 +1920,7 @@ if("serviceWorker" in navigator){
 // Mini diagnóstico visible en consola para instalación PWA.
 window.addEventListener("appinstalled", () => console.log("ÜBERDO GO instalado como PWA"));
 window.addEventListener("beforeinstallprompt", () => console.log("ÜBERDO GO listo para instalar"));
-console.log("ÜBERDO GO v2.5b cargado desde:", location.href);
+console.log("ÜBERDO GO v2.6 cargado desde:", location.href);
 
 </script>
 </body>

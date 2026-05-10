@@ -1,12 +1,12 @@
-# ÜBERDO GO v2.5b SAFE
+# ÜBERDO GO v2.6
 
-Base: v2.4 que funcionaba.
+Objetivo: estabilidad.
 
-Cambios mínimos:
+Cambios:
+- Botón MAX (⛶) en la pantalla normal.
 - Botón Salir en dashboard full.
-- Rebinding seguro de botones full.
-- No toca tarifas, historial, init, manifest display ni lógica principal.
-- Cache: uberdo-go-v25b-safe.
-
-Sobre service worker:
-El nombre del archivo no importa. Puede llamarse service-worker.js o sw.js, siempre que el index registre ese mismo nombre.
+- Los controles full usan evento global en captura (`pointerup`) para evitar capas bloqueando botones.
+- No depende del fullscreen real del navegador.
+- El doble tap queda como extra.
+- Manifest: display standalone.
+- Cache: uberdo-go-v26-stable-max.
