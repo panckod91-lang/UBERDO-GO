@@ -1,9 +1,13 @@
-# ÜBERDO GO v2.0
+# ÜBERDO GO v2.1
 
 Cambios:
-- Corrección fuerte del modo doble tap.
-- Horizontal: tarifa centrada verticalmente y botones en columna derecha.
-- Vertical: botones debajo de la tarifa en grilla 2x2.
-- Stats siempre visibles abajo.
-- Versión visible: v2.0.
-- Cache: uberdo-go-v20-full-layout-fix.
+- “Total estimado” ahora es “Total del viaje”.
+- Ajuste visual de tarifa en modo normal y doble tap.
+- Menos margen/hueco en modo apaisado fullscreen.
+- Estados diferenciados:
+  - ○ Libre
+  - ▶ En viaje
+  - ⏸ Pausado
+- Colores por estado.
+- Versión visible: v2.1.
+- Cache: uberdo-go-v21-meter-polish.
