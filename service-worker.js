@@ -1,4 +1,4 @@
-const CACHE_NAME = "uberdo-go-v17-no-orientation";
+const CACHE_NAME = "uberdo-go-v18-fullscreen-card";
 const ASSETS = [
   "./",
   "./index.html",

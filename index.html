@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>ÜBERDO GO</title>
   <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#07111f" />
+  <meta name="theme-color" content="#05080f" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="fullscreen" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-title" content="Remisímetro" />
@@ -218,6 +220,96 @@
     .trip small{display:block;color:var(--muted);margin-top:3px}
     .empty{color:var(--muted);font-size:13px;text-align:center;padding:16px}
     .tips{font-size:12px;color:var(--muted);line-height:1.35}
+
+    body.fullMeter{
+      overflow:hidden;
+    }
+    body.fullMeter .right,
+    body.fullMeter header,
+    body.fullMeter .controls{
+      display:none !important;
+    }
+    body.fullMeter .app{
+      display:block;
+      width:100vw;
+      height:100svh;
+      padding:0;
+    }
+    body.fullMeter .left{
+      width:100vw;
+      height:100svh;
+      border-radius:0;
+      border:0;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(40,227,156,.15), transparent 42%),
+        linear-gradient(145deg,#05080f,#091426);
+      box-shadow:none;
+    }
+    body.fullMeter .meter{
+      height:100svh;
+      padding:16px;
+      grid-template-rows:1fr auto;
+      gap:14px;
+    }
+    body.fullMeter .fareBox{
+      border-radius:30px;
+      align-items:flex-start;
+      justify-content:center;
+      padding:26px;
+    }
+    body.fullMeter .fare{
+      font-size:clamp(92px,21vw,210px);
+      line-height:.9;
+      letter-spacing:-.06em;
+    }
+    body.fullMeter .state{
+      font-size:clamp(18px,3vw,34px);
+      margin-top:18px;
+    }
+    body.fullMeter .gridStats{
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+    }
+    body.fullMeter .stat{
+      padding:18px;
+      border-radius:24px;
+    }
+    body.fullMeter .stat b{
+      font-size:clamp(34px,6vw,76px);
+    }
+    body.fullMeter .stat:nth-child(4){
+      display:none;
+    }
+    .fullHint{
+      position:fixed;
+      left:50%;
+      bottom:10px;
+      transform:translateX(-50%);
+      z-index:60;
+      padding:7px 11px;
+      border-radius:999px;
+      background:rgba(0,0,0,.45);
+      color:rgba(255,255,255,.68);
+      font-size:11px;
+      font-weight:800;
+      pointer-events:none;
+      display:none;
+    }
+    body.fullMeter .fullHint{
+      display:block;
+    }
+    @media (orientation:portrait){
+      body.fullMeter .gridStats{
+        grid-template-columns:1fr;
+      }
+      body.fullMeter .fare{
+        font-size:clamp(84px,25vw,150px);
+      }
+      body.fullMeter .meter{
+        padding:12px;
+      }
+    }
+
     @media (orientation:portrait){
       body{
         overflow:auto;
@@ -288,8 +380,8 @@
         <div class="brand">
           <div class="logo">Ü</div>
           <div>
-            <h1>ÜBERDO GO <span class="versionTag">v1.7</span></h1>
-            <div class="sub" id="subtitle">Sistema listo para viajar · rotación libre v1.7</div>
+            <h1>ÜBERDO GO <span class="versionTag">v1.8</span></h1>
+            <div class="sub" id="subtitle">Sistema listo para viajar · rotación libre v1.8</div>
           </div>
         </div>
         
@@ -359,9 +451,10 @@
       <div class="history" id="history"></div>
     </aside>
   </main>
+  <div class="fullHint">Doble tap para volver</div>
 
 <script>
-const VERSION = "1.7.0";
+const VERSION = "1.8.0";
 const CACHE_LABEL = "remisimetro-gps";
 
 let watchId = null;
@@ -386,6 +479,47 @@ const defaultFare = {
 };
 
 let fare = loadFare();
+
+
+let lastFareTap = 0;
+
+async function tryBrowserFullscreen(){
+  try{
+    const el = document.documentElement;
+    if(!document.fullscreenElement && el.requestFullscreen){
+      await el.requestFullscreen();
+    }
+  }catch(e){
+    console.log("Fullscreen no disponible:", e);
+  }
+}
+
+async function exitBrowserFullscreen(){
+  try{
+    if(document.fullscreenElement && document.exitFullscreen){
+      await document.exitFullscreen();
+    }
+  }catch(e){}
+}
+
+async function toggleFullMeter(){
+  document.body.classList.toggle("fullMeter");
+  if(document.body.classList.contains("fullMeter")){
+    await tryBrowserFullscreen();
+  }else{
+    await exitBrowserFullscreen();
+  }
+}
+
+function handleFareTap(){
+  const now = Date.now();
+  if(now - lastFareTap < 330){
+    toggleFullMeter();
+    lastFareTap = 0;
+  }else{
+    lastFareTap = now;
+  }
+}
 
 function loadFare(){
   try { return {...defaultFare, ...JSON.parse(localStorage.getItem("fareConfig") || "{}")}; }
@@ -673,7 +807,7 @@ async function hardRefreshApp(){
       const keys = await caches.keys();
       await Promise.all(keys.map(key => caches.delete(key)));
     }
-    const cleanUrl = location.origin + location.pathname + "?v=1.7&t=" + Date.now();
+    const cleanUrl = location.origin + location.pathname + "?v=1.8&t=" + Date.now();
     location.replace(cleanUrl);
   }catch(e){
     console.log(e);
@@ -681,6 +815,7 @@ async function hardRefreshApp(){
   }
 }
 $("startBtn").onclick = startRide;
+document.querySelector(".fareBox").addEventListener("click", handleFareTap);
 $("pauseBtn").onclick = pauseRide;
 $("finishBtn").onclick = finishRide;
 $("resetBtn").onclick = () => resetRide(true);
@@ -703,7 +838,7 @@ if("serviceWorker" in navigator){
 // Mini diagnóstico visible en consola para instalación PWA.
 window.addEventListener("appinstalled", () => console.log("ÜBERDO GO instalado como PWA"));
 window.addEventListener("beforeinstallprompt", () => console.log("ÜBERDO GO listo para instalar"));
-console.log("ÜBERDO GO v1.7.0 cargado desde:", location.href);
+console.log("ÜBERDO GO v1.8.0 cargado desde:", location.href);
 
 </script>
 </body>
