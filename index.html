@@ -13,11 +13,16 @@
   <meta name="apple-mobile-web-app-title" content="ÜBERDO GO" />
   <!-- Open Graph / WhatsApp preview -->
   <meta property="og:type"        content="website" />
-  <meta property="og:title"       content="ÜBERDO GO — Medidor de viajes" />
+  <meta property="og:title"       content="ÜBERDO GO — Medidor de viajes GPS" />
   <meta property="og:description" content="Calculá tu tarifa de taxi en tiempo real con GPS. Bajada, $/km y tiempo configurables." />
-  <meta property="og:image"       id="ogImage" content="./icon-512.png" />
-  <meta property="og:url"         id="ogUrl"   content="" />
+  <!-- ↓ REEMPLAZÁ con tu URL real del deploy (ej: https://uberdo.pages.dev/icon-512.png) -->
+  <meta property="og:image"       content="https://uberdo-go.pages.dev/icon-512.png" />
+  <meta property="og:image:width"  content="512" />
+  <meta property="og:image:height" content="512" />
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://uberdo-go.pages.dev" />
   <meta name="twitter:card"       content="summary" />
+  <meta name="twitter:image"      content="https://uberdo-go.pages.dev/icon-512.png" />
   <style>
     :root{
       --bg:#07111f;
@@ -2043,12 +2048,6 @@ updateUI();
 tryRestoreSession();
 bindStableFullControlsV27();
 buildCityPills();
-// OG tags con URL absoluta para WhatsApp
-(function(){
-  const base = location.origin + location.pathname.replace(/index\.html.*$/, "");
-  document.getElementById("ogImage").content = base + "icon-512.png";
-  document.getElementById("ogUrl").content   = base;
-})();
 
 if("serviceWorker" in navigator){
   window.addEventListener("load", () => {
