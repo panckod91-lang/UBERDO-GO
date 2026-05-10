@@ -1,4 +1,4 @@
-const CACHE_NAME = "uberdo-go-v13-natural";
+const CACHE_NAME = "uberdo-go-v14-right-scroll";
 const ASSETS = [
   "./",
   "./index.html",

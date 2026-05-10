@@ -1,17 +1,13 @@
-# ÜBERDO GO v1.3 NATURAL
+# ÜBERDO GO v1.4
 
 Cambios:
-- Versión visible junto al título: v1.3.
-- Sin bloqueo vertical.
-- Layout responsive portrait/landscape.
-- Manifest orientation: natural.
-- start_url con query: ./index.html?v=1.3
-- Cache nueva: uberdo-go-v13-natural.
+- Versión visible: v1.4.
+- En apaisado, el panel derecho tiene scroll independiente.
+- El tablero izquierdo queda fijo.
+- Cache nueva: uberdo-go-v14-right-scroll.
+- start_url: ./index.html?v=1.4
 
-Importante:
-Para probar bien:
-1. Borrar app instalada anterior.
-2. En Chrome borrar datos del sitio GitHub Pages.
-3. Reemplazar archivos en GitHub.
-4. Abrir la URL con ?v=1.3 si hace falta.
-5. Instalar nuevamente.
+Para probar:
+1. Reemplazar archivos en GitHub.
+2. Abrir la URL publicada con ?v=1.4.
+3. Si hace falta, borrar datos del sitio o reinstalar la app.
