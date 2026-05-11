@@ -1329,6 +1329,25 @@ body.fullMeter .fullDash{
   color: #28e39c !important;
 }
 
+
+/* v2.7d: estado finalizado visible */
+.stateFinished{
+  color:#5bd7ff !important;
+  background:rgba(91,215,255,.10);
+  border-color:rgba(91,215,255,.25);
+  text-shadow:0 0 18px rgba(91,215,255,.20);
+}
+.stateFinished .stateIcon{
+  background:rgba(91,215,255,.22);
+  color:#5bd7ff;
+}
+.fullState.finished{
+  color:#5bd7ff;
+  background:rgba(91,215,255,.10);
+  border-color:rgba(91,215,255,.25);
+  text-shadow:0 0 18px rgba(91,215,255,.20);
+}
+
 </style>
 </head>
 <body>
@@ -1338,8 +1357,8 @@ body.fullMeter .fullDash{
         <div class="brand">
           <div class="logo">Ü</div>
           <div>
-            <h1>ÜBERDO GO <span class="versionTag">v2.7c</span></h1>
-            <div class="sub" id="subtitle">Sistema listo para viajar · v2.7c</div>
+            <h1>ÜBERDO GO <span class="versionTag">v2.7d</span></h1>
+            <div class="sub" id="subtitle">Sistema listo para viajar · v2.7d</div>
           </div>
         </div>
         
@@ -1446,7 +1465,7 @@ body.fullMeter .fullDash{
   <div class="fullHint">Doble tap para volver</div>
 
 <script>
-const VERSION = "2.7.3";
+const VERSION = "2.7d";
 const CACHE_LABEL = "remisimetro-gps";
 
 /* ---- Vibración táctil ---- */
@@ -1499,6 +1518,7 @@ function exportCSV(){
 let watchId = null;
 let isRunning = false;
 let isPaused = false;
+let isFinished = false;
 let startedAt = null;
 let elapsedSeconds = 0;
 let timer = null;
@@ -1641,7 +1661,7 @@ function updateFullDashboard(){
   document.getElementById("fullSpeed").textContent = Math.round(currentSpeed || 0);
 
   const st = document.getElementById("fullState");
-  st.classList.remove("running","paused");
+  st.classList.remove("running","paused","finished");
 
   if(!isRunning){
     st.innerHTML = `<span class="stateIcon">○</span> Libre`;
@@ -1696,6 +1716,7 @@ function startRide(){
 
   isRunning = true;
   isPaused = false;
+  isFinished = false;
   startedAt = new Date();
   elapsedSeconds = 0;
   distanceMeters = 0;
@@ -1750,7 +1771,12 @@ function finishRide(){
     destination: $("destination").value.trim()
   };
   saveTrip(trip);
-  resetRide(false);
+  isRunning = false;
+  isPaused = false;
+  isFinished = false;
+  isFinished = true;
+  updateUI();
+  if(typeof updateFullDashboard === 'function') updateFullDashboard();
   renderHistory();
   toast("Viaje guardado");
 }
@@ -2023,7 +2049,7 @@ async function hardRefreshApp(){
       const keys = await caches.keys();
       await Promise.all(keys.map(key => caches.delete(key)));
     }
-    const cleanUrl = location.origin + location.pathname + "?v=2.7c&t=" + Date.now();
+    const cleanUrl = location.origin + location.pathname + "?v=2.7d&t=" + Date.now();
     location.replace(cleanUrl);
   }catch(e){
     console.log(e);
@@ -2058,7 +2084,7 @@ if("serviceWorker" in navigator){
 // Mini diagnóstico visible en consola para instalación PWA.
 window.addEventListener("appinstalled", () => console.log("ÜBERDO GO instalado como PWA"));
 window.addEventListener("beforeinstallprompt", () => console.log("ÜBERDO GO listo para instalar"));
-console.log("ÜBERDO GO v2.7c cargado desde:", location.href);
+console.log("ÜBERDO GO v2.7d cargado desde:", location.href);
 
 </script>
 </body>
